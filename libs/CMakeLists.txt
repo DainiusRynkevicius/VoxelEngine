@@ -1,0 +1,5 @@
+add_subdirectory(wgpu-native)
+add_subdirectory(spdlog-1.17.0)
+add_subdirectory(glfw-3.4)
+add_subdirectory(glfw3webgpu)
+add_subdirectory(glm)
