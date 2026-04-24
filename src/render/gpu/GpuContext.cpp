@@ -81,6 +81,7 @@ std::optional<Render::Gpu::Frame> Render::Gpu::GpuContext::StartFrame() {
         }
 
         //TODO: Handle better, reconfigure surface
+        spdlog::warn("Failed to obtain surface texture.");
         return {};
     }
 
@@ -104,4 +105,15 @@ void Render::Gpu::GpuContext::EndFrame() {
     if (present_status != wgpu::Status::Success) {
         spdlog::error("Failed to present frame");
     }
+}
+
+void Render::Gpu::GpuContext::Resize(int width, int height, GLFWwindow* window) {
+    // Some platforms call resize event with (0, 0) when minimizing.
+    if (width == 0 || height == 0) {
+        return;
+    }
+    surface_configuration.width = width;
+    surface_configuration.height = height;
+
+    surface->configure(surface_configuration);
 }

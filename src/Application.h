@@ -16,8 +16,10 @@ private:
     render::Renderer renderer;
 
 public:
+    static Application* Get();
     Application();
     void Run();
+    static void ResizeCallback(GLFWwindow* window, int width, int height);
 };
 
 

@@ -30,6 +30,8 @@ namespace Render::Gpu {
 
         std::optional<Frame> StartFrame();
         void EndFrame();
+
+        void Resize(int width, int height, GLFWwindow* window);
     };
 }
 
