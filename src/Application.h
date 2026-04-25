@@ -14,6 +14,9 @@ private:
     Window window;
     Render::Gpu::GpuContext gpu_context;
     render::Renderer renderer;
+    Ui::DebugUi imgui;
+
+    double last_time;
 
 public:
     static Application* Get();

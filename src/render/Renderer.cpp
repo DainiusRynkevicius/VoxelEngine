@@ -20,7 +20,7 @@ namespace render {
         ctx.Queue().writeBuffer(*vertex_buffer, 0, vertices.data(), buffer_desc.size);
     }
 
-    void Renderer::Render(Render::Gpu::GpuContext& ctx) {
+    void Renderer::Render(Render::Gpu::GpuContext& ctx, Ui::DebugUi& imgui) {
         auto frame_opt = ctx.StartFrame();
         if (!frame_opt) {
             spdlog::warn("Received invalid frame, skipping frame...");
@@ -46,6 +46,8 @@ namespace render {
             pass->setPipeline(pipeline.Get());
             pass->setVertexBuffer(0, *vertex_buffer, 0, vertex_buffer->getSize());
             pass->draw(vertices.size(), 1, 0, 0);
+
+            imgui.Render(*pass);
             pass->end();
         }
 

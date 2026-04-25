@@ -5,6 +5,8 @@
 #include "Application.h"
 
 #include "spdlog/spdlog.h"
+#include "ui/DemoWindow.h"
+#include "ui/PerformanceWindow.h"
 
 static Application* instance;
 
@@ -13,15 +15,28 @@ Application* Application::Get() {
     return instance;
 }
 
-Application::Application() : window({800, 600}, "Voxel Engine"), gpu_context(window), renderer(gpu_context) {
+Application::Application() : window({800, 600}, "Voxel Engine"), gpu_context(window), renderer(gpu_context),
+                             imgui(gpu_context, window) {
     instance = this;
     glfwSetFramebufferSizeCallback(window.Get(), ResizeCallback);
+    imgui.AddDrawable<Ui::DemoWindow>();
+    imgui.AddDrawable<Ui::PerformanceWindow>();
+
+    last_time = glfwGetTime();
 }
 
 void Application::Run() {
     while (!glfwWindowShouldClose(window.Get())) {
         glfwPollEvents();
-        renderer.Render(gpu_context);
+
+        double now = glfwGetTime();
+        double delta = now - last_time;
+        last_time = now;
+
+
+        imgui.Update(delta);
+
+        renderer.Render(gpu_context, imgui);
     }
 }
 

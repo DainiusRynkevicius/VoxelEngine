@@ -8,6 +8,8 @@
 #include "gpu/Pipeline.h"
 #include <array>
 
+#include "../ui/DebugUi.h"
+
 namespace render {
 
 class Renderer {
@@ -36,7 +38,7 @@ public:
     };
     Renderer(Render::Gpu::GpuContext& ctx);
 
-    void Render(Render::Gpu::GpuContext& ctx);
+    void Render(Render::Gpu::GpuContext& ctx, Ui::DebugUi& imgui);
 private:
     Render::Gpu::Pipeline pipeline;
     wgpu::raii::Buffer vertex_buffer;

@@ -17,7 +17,14 @@ add_executable(VoxelEngine src/main.cpp
         src/render/Renderer.h
         src/render/gpu/Frame.h
         src/render/gpu/Pipeline.cpp
-        src/render/gpu/Pipeline.h)
+        src/render/gpu/Pipeline.h
+        src/ui/ImguiDrawable.h
+        src/ui/DemoWindow.cpp
+        src/ui/DemoWindow.h
+        src/ui/DebugUi.cpp
+        src/ui/DebugUi.h
+        src/ui/PerformanceWindow.cpp
+        src/ui/PerformanceWindow.h)
 
 target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm imgui)
 
