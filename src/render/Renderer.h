@@ -6,6 +6,7 @@
 #define VOXELENGINE_RENDERER_H
 #include "gpu/GpuContext.h"
 #include "gpu/Pipeline.h"
+#include <array>
 
 namespace render {
 
