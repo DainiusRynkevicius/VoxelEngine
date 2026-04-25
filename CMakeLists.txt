@@ -15,7 +15,9 @@ add_executable(VoxelEngine src/main.cpp
         src/Window.h
         src/render/Renderer.cpp
         src/render/Renderer.h
-        src/render/gpu/Frame.h)
+        src/render/gpu/Frame.h
+        src/render/gpu/Pipeline.cpp
+        src/render/gpu/Pipeline.h)
 
 target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm)
 

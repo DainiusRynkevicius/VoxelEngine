@@ -3,12 +3,21 @@
 //
 
 #include "Renderer.h"
+#include "Renderer.h"
 
 #include "spdlog/spdlog.h"
 
 namespace render {
-    Renderer::Renderer(Render::Gpu::GpuContext& ctx) {
-        //TODO: init pipelines
+    Renderer::Renderer(Render::Gpu::GpuContext& ctx) : pipeline(ctx) {
+        //TODO: move elsewhere
+        wgpu::BufferDescriptor buffer_desc{};
+        buffer_desc.size = sizeof(Vertex) * vertices.size();
+        buffer_desc.mappedAtCreation = false;
+        buffer_desc.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
+
+        vertex_buffer = ctx.Device().createBuffer(buffer_desc);
+
+        ctx.Queue().writeBuffer(*vertex_buffer, 0, vertices.data(), buffer_desc.size);
     }
 
     void Renderer::Render(Render::Gpu::GpuContext& ctx) {
@@ -34,6 +43,9 @@ namespace render {
 
         {
             wgpu::raii::RenderPassEncoder pass = encoder->beginRenderPass(render_desc);
+            pass->setPipeline(pipeline.Get());
+            pass->setVertexBuffer(0, *vertex_buffer, 0, vertex_buffer->getSize());
+            pass->draw(vertices.size(), 1, 0, 0);
             pass->end();
         }
 

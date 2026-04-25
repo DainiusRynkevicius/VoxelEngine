@@ -22,20 +22,21 @@ namespace Render::Gpu {
         wgpu::raii::Queue queue;
 
         wgpu::SurfaceConfiguration surface_configuration;
+
     public:
         explicit GpuContext(Window& window);
 
-        wgpu::Device Device(){return *device;}
-        wgpu::Queue Queue(){return *queue;}
+        wgpu::Device Device() { return *device; }
+        wgpu::Queue Queue() { return *queue; }
+        [[nodiscard]] wgpu::TextureFormat ColorFormat() const { return surface_configuration.format; };
 
         std::optional<Frame> StartFrame();
+
         void EndFrame();
 
         void Resize(int width, int height, GLFWwindow* window);
     };
 }
-
-
 
 
 #endif //VOXELENGINE_GPUCONTEXT_H
