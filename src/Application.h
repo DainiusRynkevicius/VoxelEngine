@@ -6,6 +6,7 @@
 #define VOXELENGINE_APPLICATION_H
 #include "render/Renderer.h"
 #include "Window.h"
+#include "render/Camera.h"
 #include "render/gpu/GpuContext.h"
 
 
@@ -15,6 +16,7 @@ private:
     Render::Gpu::GpuContext gpu_context;
     render::Renderer renderer;
     Ui::DebugUi imgui;
+    Render::Camera camera;
 
     double last_time;
 

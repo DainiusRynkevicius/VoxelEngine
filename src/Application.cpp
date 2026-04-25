@@ -16,7 +16,7 @@ Application* Application::Get() {
 }
 
 Application::Application() : window({800, 600}, "Voxel Engine"), gpu_context(window), renderer(gpu_context),
-                             imgui(gpu_context, window) {
+                             imgui(gpu_context, window), camera() {
     instance = this;
     glfwSetFramebufferSizeCallback(window.Get(), ResizeCallback);
     imgui.AddDrawable<Ui::DemoWindow>();
@@ -36,7 +36,7 @@ void Application::Run() {
 
         imgui.Update(delta);
 
-        renderer.Render(gpu_context, imgui);
+        renderer.Render(gpu_context, imgui, camera);
     }
 }
 

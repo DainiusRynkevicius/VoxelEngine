@@ -13,7 +13,28 @@
 namespace Render::Gpu {
     Pipeline::Pipeline(GpuContext& ctx) {
         auto shader = LoadShaderModule("assets/shaders/chunk.wgsl", ctx.Device());
+
+        wgpu::BindGroupLayoutDescriptor uniform_desc{};
+        uniform_desc.entryCount = 1;
+
+
+        wgpu::BindGroupLayoutEntry uniform_entry{};
+        uniform_entry.binding = 0;
+        uniform_entry.visibility = wgpu::ShaderStage::Vertex;
+        uniform_entry.buffer.type = wgpu::BufferBindingType::Uniform;
+
+        uniform_desc.entries = &uniform_entry;
+
+        frame_uniform_layout = ctx.Device().createBindGroupLayout(uniform_desc);
+
         wgpu::PipelineLayoutDescriptor layout_descriptor{};
+
+        std::array<WGPUBindGroupLayout, 1> layouts = {
+            *frame_uniform_layout
+        };
+
+        layout_descriptor.bindGroupLayoutCount = layouts.size();
+        layout_descriptor.bindGroupLayouts = layouts.data();
 
         layout = ctx.Device().createPipelineLayout(layout_descriptor);
 

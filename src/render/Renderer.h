@@ -8,6 +8,7 @@
 #include "gpu/Pipeline.h"
 #include <array>
 
+#include "Camera.h"
 #include "../ui/DebugUi.h"
 
 namespace render {
@@ -38,10 +39,13 @@ public:
     };
     Renderer(Render::Gpu::GpuContext& ctx);
 
-    void Render(Render::Gpu::GpuContext& ctx, Ui::DebugUi& imgui);
+    void Render(Render::Gpu::GpuContext& ctx, Ui::DebugUi& imgui, Render::Camera& camera);
+
 private:
     Render::Gpu::Pipeline pipeline;
     wgpu::raii::Buffer vertex_buffer;
+    wgpu::raii::Buffer frame_uniform;
+    wgpu::raii::BindGroup frame_uniform_group;
 
     std::vector<Vertex> vertices = {
         {{0, 1, 0},{1,0,0}},

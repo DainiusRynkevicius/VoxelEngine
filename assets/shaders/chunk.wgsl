@@ -8,11 +8,19 @@ struct VertexOut{
     @location(0) color: vec3f,
 }
 
+struct FrameUniform{
+    viewProj: mat4x4f,
+    model: mat4x4f
+}
+
+@group(0) @binding(0)
+var<uniform> frame_uniform: FrameUniform;
+
 @vertex
 fn vs_main(in: VertexIn) -> VertexOut{
     var out: VertexOut;
     out.color = in.color;
-    out.position = vec4f(in.position,1.0);
+    out.position = frame_uniform.viewProj * frame_uniform.model * vec4f(in.position,1.0);
     return out;
 }
 
