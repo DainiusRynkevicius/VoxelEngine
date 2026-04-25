@@ -19,7 +19,7 @@ add_executable(VoxelEngine src/main.cpp
         src/render/gpu/Pipeline.cpp
         src/render/gpu/Pipeline.h)
 
-target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm)
+target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm imgui)
 
 add_custom_target(CopyAssets ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets $<TARGET_FILE_DIR:VoxelEngine>/assets COMMENT "Copying Assets")
 
