@@ -52,7 +52,7 @@ namespace Render::Gpu {
         pipeline_desc.vertex.bufferCount = 1;
         pipeline_desc.vertex.buffers = &vertex_layout;
 
-        pipeline_desc.primitive.cullMode = wgpu::CullMode::None;
+        pipeline_desc.primitive.cullMode = wgpu::CullMode::Back;
         pipeline_desc.primitive.frontFace = wgpu::FrontFace::CCW;
         pipeline_desc.primitive.stripIndexFormat = wgpu::IndexFormat::Undefined;
         pipeline_desc.primitive.topology = wgpu::PrimitiveTopology::TriangleList;
