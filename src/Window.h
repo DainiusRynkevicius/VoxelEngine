@@ -9,7 +9,6 @@
 #include "GLFW/glfw3.h"
 #include "glm/glm.hpp"
 
-namespace Render {
 
 class Window {
 private:
@@ -22,6 +21,5 @@ public:
     [[nodiscard]] glm::ivec2 Size() const;
 };
 
-} // Render
 
 #endif //VOXELENGINE_WINDOW_H

@@ -2,9 +2,10 @@
 // Created by Dainius Rynkevicius on 24/04/2026.
 //
 
-#include "render/Window.h"
+#include "Window.h"
 
-namespace Render {
+
+
     Window::Window(glm::ivec2 size, std::string_view title) : size(size){
         glfwInit();
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
@@ -16,4 +17,3 @@ namespace Render {
         glfwGetFramebufferSize(window, &res.x, &res.y);
         return res;
     }
-} // Render

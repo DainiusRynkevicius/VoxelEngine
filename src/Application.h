@@ -11,7 +11,7 @@
 
 class Application {
 private:
-    Render::Window window;
+    Window window;
     Render::Gpu::GpuContext gpu_context;
     render::Renderer renderer;
 
