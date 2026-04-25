@@ -9,7 +9,7 @@ int main() {
         app.Run();
     } catch (std::exception& e) {
         spdlog::error("Uncaught exception: {}", e.what());
-        throw e;
+        throw;
     }
 
     return 0;

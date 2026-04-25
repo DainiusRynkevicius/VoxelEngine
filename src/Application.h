@@ -5,7 +5,7 @@
 #ifndef VOXELENGINE_APPLICATION_H
 #define VOXELENGINE_APPLICATION_H
 #include "render/Renderer.h"
-#include "render/Window.h"
+#include "Window.h"
 #include "render/gpu/GpuContext.h"
 
 

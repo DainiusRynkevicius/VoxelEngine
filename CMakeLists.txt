@@ -11,10 +11,14 @@ add_executable(VoxelEngine src/main.cpp
         src/render/gpu/GpuContext.h
         src/Application.cpp
         src/Application.h
-        src/render/Window.cpp
-        src/render/Window.h
+        src/Window.cpp
+        src/Window.h
         src/render/Renderer.cpp
         src/render/Renderer.h
         src/render/gpu/Frame.h)
 
 target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm)
+
+add_custom_target(CopyAssets ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets $<TARGET_FILE_DIR:VoxelEngine>/assets COMMENT "Copying Assets")
+
+add_dependencies(VoxelEngine CopyAssets)

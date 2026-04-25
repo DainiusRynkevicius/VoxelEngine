@@ -2,7 +2,7 @@
 // Created by Dainius Rynkevicius on 24/04/2026.
 //
 
-#include "Window.h"
+#include "render/Window.h"
 
 namespace Render {
     Window::Window(glm::ivec2 size, std::string_view title) : size(size){

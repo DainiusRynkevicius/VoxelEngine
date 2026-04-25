@@ -10,7 +10,7 @@
 #include <optional>
 
 #include "Frame.h"
-#include "../Window.h"
+#include "../../Window.h"
 
 namespace Render::Gpu {
     class GpuContext {
