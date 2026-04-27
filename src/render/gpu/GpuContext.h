@@ -30,6 +30,10 @@ namespace Render::Gpu {
         wgpu::Queue Queue() { return *queue; }
         [[nodiscard]] wgpu::TextureFormat ColorFormat() const { return surface_configuration.format; };
 
+        [[nodiscard]] glm::ivec2 SurfaceSize() const {
+            return {surface_configuration.width, surface_configuration.height};
+        }
+
         std::optional<Frame> StartFrame();
 
         void EndFrame();

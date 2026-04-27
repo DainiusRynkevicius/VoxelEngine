@@ -31,7 +31,7 @@ namespace Ui {
         init_info.Device = gpu.Device();
         init_info.NumFramesInFlight = 3;
         init_info.RenderTargetFormat = gpu.ColorFormat();
-        init_info.DepthStencilFormat = WGPUTextureFormat_Undefined;
+        init_info.DepthStencilFormat = WGPUTextureFormat_Depth32Float;
         ImGui_ImplWGPU_Init(&init_info);
     }
 

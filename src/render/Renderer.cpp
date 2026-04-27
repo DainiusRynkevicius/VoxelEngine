@@ -36,6 +36,8 @@ namespace render {
         uniform_group_desc.entries = &entry;
 
         frame_uniform_group = ctx.Device().createBindGroup(uniform_group_desc);
+
+        CreateDepthTexture(ctx);
     }
 
     void Renderer::Render(Render::Gpu::GpuContext& ctx, Ui::DebugUi& imgui, Render::Camera& camera) {
@@ -48,7 +50,8 @@ namespace render {
 
         float aspect = (float) frame.Width() / (float) frame.Height();
         glm::mat4 viewProj = camera.Projection(aspect) * camera.View();
-        glm::mat4 model = glm::translate(glm::mat4{1.0f}, glm::vec3(0.0f, 0.0f, -3.0f));
+        glm::mat4 model = glm::rotate(glm::translate(glm::mat4{1.0f}, glm::vec3(0.0f, 0.0f, -3.0f)),
+                                      (float) glm::radians(glfwGetTime() * 8.f), {0, 1, 1});
         //glm::mat4 model = glm::mat4{1.0};
 
         Render::FrameUniform uniform = {viewProj, model};
@@ -68,6 +71,14 @@ namespace render {
         render_desc.colorAttachmentCount = 1;
         render_desc.colorAttachments = &color_attachment;
 
+        wgpu::RenderPassDepthStencilAttachment depth{};
+        depth.view = *depth_view;
+        depth.depthLoadOp = wgpu::LoadOp::Clear;
+        depth.depthClearValue = 1.0;
+        depth.depthStoreOp = wgpu::StoreOp::Store;
+
+        render_desc.depthStencilAttachment = &depth;
+
         {
             wgpu::raii::RenderPassEncoder pass = encoder->beginRenderPass(render_desc);
             pass->setPipeline(pipeline.Get());
@@ -82,5 +93,26 @@ namespace render {
         ctx.Queue().submit(encoder->finish());
 
         ctx.EndFrame();
+    }
+
+    void Renderer::CreateDepthTexture(Render::Gpu::GpuContext& ctx) {
+        auto surface_size = ctx.SurfaceSize();
+        wgpu::Extent3D size{};
+        size.depthOrArrayLayers = 1;
+
+        size.height = surface_size.y;
+        wgpu::TextureDescriptor desc{};
+        desc.dimension = wgpu::TextureDimension::_2D;
+        desc.format = wgpu::TextureFormat::Depth32Float;
+        desc.mipLevelCount = 1;
+        desc.size.width = surface_size.x;
+        desc.size.height = surface_size.y;
+        desc.size.depthOrArrayLayers = 1;
+        desc.sampleCount = 1;
+        desc.usage = wgpu::TextureUsage::RenderAttachment;
+
+        depth_texture = ctx.Device().createTexture(desc);
+
+        depth_view = depth_texture->createView();
     }
 } // render

@@ -43,4 +43,5 @@ void Application::Run() {
 void Application::ResizeCallback(GLFWwindow* window, int width, int height) {
     spdlog::info("Resizing window...");
     Get()->gpu_context.Resize(width, height, window);
+    Get()->renderer.CreateDepthTexture(Get()->gpu_context);
 }

@@ -81,7 +81,13 @@ namespace Render::Gpu {
         frag_state.targets = &color_target;
 
         pipeline_desc.fragment = &frag_state;
-        pipeline_desc.depthStencil = nullptr;
+
+        wgpu::DepthStencilState depth{};
+        depth.format = wgpu::TextureFormat::Depth32Float;
+        depth.depthWriteEnabled = wgpu::OptionalBool::True;
+        depth.depthCompare = wgpu::CompareFunction::Less;
+
+        pipeline_desc.depthStencil = &depth;
 
         pipeline_desc.multisample.count = 1;
         pipeline_desc.multisample.mask = ~0u;
