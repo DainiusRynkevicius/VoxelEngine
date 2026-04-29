@@ -97,10 +97,10 @@ namespace Render::Gpu {
     }
 
     wgpu::raii::ShaderModule Pipeline::LoadShaderModule(std::filesystem::path path, wgpu::Device device) {
-        spdlog::info("Loading shader: {}", path.c_str());
+        spdlog::info("Loading shader: {}", path.string());
         std::ifstream in(path);
         if (!in) {
-            throw std::runtime_error(std::format("Failed to open path {}", path.c_str()));
+            throw std::runtime_error(std::format("Failed to open path {}", path.string()));
         }
 
         std::string src((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
