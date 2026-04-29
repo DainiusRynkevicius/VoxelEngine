@@ -14,9 +14,9 @@ class Application {
 private:
     Window window;
     Render::Gpu::GpuContext gpu_context;
-    render::Renderer renderer;
+    Render::Renderer renderer;
     Ui::DebugUi imgui;
-    Render::Camera camera;
+    Render::Camera camera{};
 
     double last_time;
 

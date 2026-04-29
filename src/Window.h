@@ -13,7 +13,6 @@
 class Window {
 private:
     GLFWwindow* window;
-    glm::ivec2 size;
 
 public:
     Window(glm::ivec2 size, std::string_view title);

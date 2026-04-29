@@ -20,8 +20,9 @@ namespace Render::Gpu {
         Frame& operator=(Frame&&)  noexcept = default;
 
         Frame(wgpu::raii::TextureView color_view, wgpu::raii::Texture color_texture, const int width,
-              const int height) : color_view(color_view), color_texture(color_texture), width(width),
-                            height(height) {
+              const int height) : color_view(std::move(color_view)), color_texture(std::move(color_texture)),
+                                  width(width),
+                                  height(height) {
         }
 
         wgpu::TextureView ColorView() {
@@ -38,7 +39,7 @@ namespace Render::Gpu {
 
     private:
         wgpu::raii::TextureView color_view;
-        wgpu::raii::Texture color_texture;;
+        wgpu::raii::Texture color_texture;
         int width;
         int height;
     };

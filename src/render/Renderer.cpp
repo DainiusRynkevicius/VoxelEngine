@@ -7,8 +7,8 @@
 #include "FrameUniform.h"
 #include "spdlog/spdlog.h"
 
-namespace render {
-    Renderer::Renderer(Render::Gpu::GpuContext& ctx) : pipeline(ctx) {
+namespace Render {
+    Renderer::Renderer(Gpu::GpuContext& ctx) : pipeline(ctx) {
         //TODO: move elsewhere
         wgpu::BufferDescriptor vert_buffer_desc{};
         vert_buffer_desc.size = sizeof(Vertex) * vertices.size();
@@ -19,7 +19,7 @@ namespace render {
         ctx.Queue().writeBuffer(*vertex_buffer, 0, vertices.data(), vert_buffer_desc.size);
 
         wgpu::BufferDescriptor uniform_desc{};
-        uniform_desc.size = sizeof(Render::FrameUniform);
+        uniform_desc.size = sizeof(FrameUniform);
         uniform_desc.mappedAtCreation = false;
         uniform_desc.usage = wgpu::BufferUsage::CopyDst | wgpu::BufferUsage::Uniform;
 
@@ -40,7 +40,7 @@ namespace render {
         CreateDepthTexture(ctx);
     }
 
-    void Renderer::Render(Render::Gpu::GpuContext& ctx, Ui::DebugUi& imgui, Render::Camera& camera) {
+    void Renderer::Render(Gpu::GpuContext& ctx, Ui::DebugUi& imgui, Camera& camera) {
         auto frame_opt = ctx.StartFrame();
         if (!frame_opt) {
             spdlog::warn("Received invalid frame, skipping frame...");
@@ -52,11 +52,10 @@ namespace render {
         glm::mat4 viewProj = camera.Projection(aspect) * camera.View();
         glm::mat4 model = glm::rotate(glm::translate(glm::mat4{1.0f}, glm::vec3(0.0f, 0.0f, -3.0f)),
                                       (float) glm::radians(glfwGetTime() * 8.f), {0, 1, 1});
-        //glm::mat4 model = glm::mat4{1.0};
 
-        Render::FrameUniform uniform = {viewProj, model};
+        FrameUniform uniform = {viewProj, model};
 
-        ctx.Queue().writeBuffer(*frame_uniform, 0, &uniform, sizeof(Render::FrameUniform));
+        ctx.Queue().writeBuffer(*frame_uniform, 0, &uniform, sizeof(FrameUniform));
 
         wgpu::raii::CommandEncoder encoder = ctx.Device().createCommandEncoder();
 
@@ -95,7 +94,7 @@ namespace render {
         ctx.EndFrame();
     }
 
-    void Renderer::CreateDepthTexture(Render::Gpu::GpuContext& ctx) {
+    void Renderer::CreateDepthTexture(Gpu::GpuContext& ctx) {
         auto surface_size = ctx.SurfaceSize();
         wgpu::Extent3D size{};
         size.depthOrArrayLayers = 1;
@@ -115,4 +114,4 @@ namespace render {
 
         depth_view = depth_texture->createView();
     }
-} // render
+} // Render

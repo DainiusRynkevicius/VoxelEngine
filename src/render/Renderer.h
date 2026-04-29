@@ -11,9 +11,8 @@
 #include "Camera.h"
 #include "../ui/DebugUi.h"
 
-namespace render {
-
-class Renderer {
+namespace Render {
+    class Renderer {
 public:
     struct Vertex {
         glm::vec3 position;

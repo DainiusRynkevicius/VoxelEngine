@@ -48,7 +48,7 @@ namespace Render::Gpu {
         pipeline_desc.vertex.constantCount = 0;
         pipeline_desc.vertex.constants = nullptr;
 
-        const wgpu::VertexBufferLayout vertex_layout = render::Renderer::Vertex::GetLayout();
+        const wgpu::VertexBufferLayout vertex_layout = Render::Renderer::Vertex::GetLayout();
         pipeline_desc.vertex.bufferCount = 1;
         pipeline_desc.vertex.buffers = &vertex_layout;
 
@@ -110,7 +110,7 @@ namespace Render::Gpu {
         wgsl.chain.sType = wgpu::SType::ShaderSourceWGSL;
 
         wgpu::ShaderModuleDescriptor desc{};
-        desc.label = wgpu::StringView{path.c_str()};
+        desc.label = wgpu::StringView{path.string()};
         desc.nextInChain = &wgsl.chain;
 
         return device.createShaderModule(desc);
