@@ -20,10 +20,8 @@ namespace Ui {
 
         void AddDrawable(std::unique_ptr<ImguiDrawable> drawable);
 
-        template<typename T, typename... Args>
+        template<std::derived_from<ImguiDrawable> T, typename... Args>
         void AddDrawable(Args&&... args) {
-            static_assert(std::is_base_of_v<ImguiDrawable, T>,
-                          "T must have base ImguiDrawable");
             drawables.push_back(std::make_unique<T>(std::forward<Args>(args)...));
         }
 
