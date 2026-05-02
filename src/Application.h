@@ -4,10 +4,13 @@
 
 #ifndef VOXELENGINE_APPLICATION_H
 #define VOXELENGINE_APPLICATION_H
+#include "CameraController.h"
 #include "render/Renderer.h"
 #include "Window.h"
 #include "render/Camera.h"
 #include "render/gpu/GpuContext.h"
+#include "world/Level.h"
+#include "world/blocks/BlockRegistry.h"
 
 
 class Application {
@@ -17,6 +20,9 @@ private:
     Render::Renderer renderer;
     Ui::DebugUi imgui;
     Render::Camera camera{};
+    CameraController controller;
+    World::Blocks::BlockRegistry registry;
+    World::Level level;
 
     double last_time;
 

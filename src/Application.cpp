@@ -7,6 +7,7 @@
 #include "spdlog/spdlog.h"
 #include "ui/DemoWindow.h"
 #include "ui/PerformanceWindow.h"
+#include "world/generators/FlatGenerator.h"
 
 static Application* instance;
 
@@ -16,13 +17,26 @@ Application* Application::Get() {
 }
 
 Application::Application() : window({800, 600}, "Voxel Engine"), gpu_context(window), renderer(gpu_context),
-                             imgui(gpu_context, window) {
+                             imgui(gpu_context, window), controller(camera),
+                             level(std::make_unique<World::Generators::FlatGenerator>()) {
     instance = this;
     glfwSetFramebufferSizeCallback(window.Get(), ResizeCallback);
     imgui.AddDrawable<Ui::DemoWindow>();
     imgui.AddDrawable<Ui::PerformanceWindow>();
 
     last_time = glfwGetTime();
+
+    //TODO: change to dynamic
+
+    // generate chunks
+    constexpr int LEVEL_SIZE = 3;
+    for (int x = -LEVEL_SIZE; x < LEVEL_SIZE; ++x) {
+        for (int y = -LEVEL_SIZE; y < LEVEL_SIZE; ++y) {
+            for (int z = -LEVEL_SIZE; z < LEVEL_SIZE; ++z) {
+                level.GenerateChunk({x, y, z});
+            }
+        }
+    }
 }
 
 void Application::Run() {
@@ -33,10 +47,11 @@ void Application::Run() {
         double delta = now - last_time;
         last_time = now;
 
+        controller.HandleInput(delta, window.Get());
 
         imgui.Update(delta);
 
-        renderer.Render(gpu_context, imgui, camera);
+        renderer.Render(gpu_context, imgui, camera, registry, level);
     }
 }
 

@@ -9,93 +9,31 @@
 #include <array>
 
 #include "Camera.h"
+#include "ChunkMesher.h"
 #include "../ui/DebugUi.h"
 
 namespace Render {
     class Renderer {
-public:
-    struct Vertex {
-        glm::vec3 position;
-        glm::vec3 color;
+    public:
+        Renderer(Render::Gpu::GpuContext& ctx);
 
-        static wgpu::VertexBufferLayout GetLayout() {
-            wgpu::VertexBufferLayout layout{};
-            layout.arrayStride = sizeof(Vertex);
-            layout.stepMode = wgpu::VertexStepMode::Vertex;
-            static std::array<WGPUVertexAttribute, 2> attributes;
-            attributes[0].format = wgpu::VertexFormat::Float32x3;
-            attributes[0].offset = offsetof(Vertex, position);
-            attributes[0].shaderLocation = 0;
+        void Render(Render::Gpu::GpuContext& ctx, Ui::DebugUi& imgui, Render::Camera& camera,
+                    World::Blocks::BlockRegistry& registry, World::
+                    Level& level);
 
-            attributes[1].format = wgpu::VertexFormat::Float32x3;
-            attributes[1].offset = offsetof(Vertex, color);
-            attributes[1].shaderLocation = 1;
+        void CreateDepthTexture(Render::Gpu::GpuContext& ctx);
 
-            layout.attributeCount = attributes.size();
-            layout.attributes = attributes.data();
-            return layout;
-        }
+    private:
+        Gpu::Pipeline pipeline;
+
+        wgpu::raii::Buffer frame_uniform;
+        wgpu::raii::BindGroup frame_uniform_group;
+
+        wgpu::raii::Texture depth_texture;
+        wgpu::raii::TextureView depth_view;
+
+        ChunkMesher world_mesher;
     };
-    Renderer(Render::Gpu::GpuContext& ctx);
-
-    void Render(Render::Gpu::GpuContext& ctx, Ui::DebugUi& imgui, Render::Camera& camera);
-
-    void CreateDepthTexture(Render::Gpu::GpuContext& ctx);
-
-private:
-    Render::Gpu::Pipeline pipeline;
-    wgpu::raii::Buffer vertex_buffer;
-    wgpu::raii::Buffer frame_uniform;
-    wgpu::raii::BindGroup frame_uniform_group;
-
-    wgpu::raii::Texture depth_texture;
-    wgpu::raii::TextureView depth_view;
-
-    const std::vector<Vertex> vertices = {
-        {{0.5f, -0.5f, -0.5f}, {1, 0, 0}},
-        {{0.5f, 0.5f, -0.5f}, {1, 0, 0}},
-        {{0.5f, 0.5f, 0.5f}, {1, 0, 0}},
-        {{0.5f, -0.5f, -0.5f}, {1, 0, 0}},
-        {{0.5f, 0.5f, 0.5f}, {1, 0, 0}},
-        {{0.5f, -0.5f, 0.5f}, {1, 0, 0}},
-
-        {{-0.5f, -0.5f, 0.5f}, {0.5f, 0, 0}},
-        {{-0.5f, 0.5f, 0.5f}, {0.5f, 0, 0}},
-        {{-0.5f, 0.5f, -0.5f}, {0.5f, 0, 0}},
-        {{-0.5f, -0.5f, 0.5f}, {0.5f, 0, 0}},
-        {{-0.5f, 0.5f, -0.5f}, {0.5f, 0, 0}},
-        {{-0.5f, -0.5f, -0.5f}, {0.5f, 0, 0}},
-
-        {{-0.5f, 0.5f, -0.5f}, {0, 1, 0}},
-        {{-0.5f, 0.5f, 0.5f}, {0, 1, 0}},
-        {{0.5f, 0.5f, 0.5f}, {0, 1, 0}},
-        {{-0.5f, 0.5f, -0.5f}, {0, 1, 0}},
-        {{0.5f, 0.5f, 0.5f}, {0, 1, 0}},
-        {{0.5f, 0.5f, -0.5f}, {0, 1, 0}},
-
-        {{-0.5f, -0.5f, 0.5f}, {0, 0.5f, 0}},
-        {{-0.5f, -0.5f, -0.5f}, {0, 0.5f, 0}},
-        {{0.5f, -0.5f, -0.5f}, {0, 0.5f, 0}},
-        {{-0.5f, -0.5f, 0.5f}, {0, 0.5f, 0}},
-        {{0.5f, -0.5f, -0.5f}, {0, 0.5f, 0}},
-        {{0.5f, -0.5f, 0.5f}, {0, 0.5f, 0}},
-
-        {{-0.5f, -0.5f, 0.5f}, {0, 0, 1}},
-        {{0.5f, -0.5f, 0.5f}, {0, 0, 1}},
-        {{0.5f, 0.5f, 0.5f}, {0, 0, 1}},
-        {{-0.5f, -0.5f, 0.5f}, {0, 0, 1}},
-        {{0.5f, 0.5f, 0.5f}, {0, 0, 1}},
-        {{-0.5f, 0.5f, 0.5f}, {0, 0, 1}},
-
-        {{0.5f, -0.5f, -0.5f}, {0, 0, 0.5f}},
-        {{-0.5f, -0.5f, -0.5f}, {0, 0, 0.5f}},
-        {{-0.5f, 0.5f, -0.5f}, {0, 0, 0.5f}},
-        {{0.5f, -0.5f, -0.5f}, {0, 0, 0.5f}},
-        {{-0.5f, 0.5f, -0.5f}, {0, 0, 0.5f}},
-        {{0.5f, 0.5f, -0.5f}, {0, 0, 0.5f}},
-    };
-};
-
 } // render
 
 #endif //VOXELENGINE_RENDERER_H

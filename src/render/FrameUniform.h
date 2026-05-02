@@ -10,7 +10,6 @@
 namespace Render{
     struct FrameUniform {
         glm::mat4 viewProj;
-        glm::mat4 model;
     };
 }
 

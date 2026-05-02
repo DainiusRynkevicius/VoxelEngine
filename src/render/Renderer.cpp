@@ -4,20 +4,13 @@
 
 #include "Renderer.h"
 
+#include <ranges>
+
 #include "FrameUniform.h"
 #include "spdlog/spdlog.h"
 
 namespace Render {
     Renderer::Renderer(Gpu::GpuContext& ctx) : pipeline(ctx) {
-        //TODO: move elsewhere
-        wgpu::BufferDescriptor vert_buffer_desc{};
-        vert_buffer_desc.size = sizeof(Vertex) * vertices.size();
-        vert_buffer_desc.mappedAtCreation = false;
-        vert_buffer_desc.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
-
-        vertex_buffer = ctx.Device().createBuffer(vert_buffer_desc);
-        ctx.Queue().writeBuffer(*vertex_buffer, 0, vertices.data(), vert_buffer_desc.size);
-
         wgpu::BufferDescriptor uniform_desc{};
         uniform_desc.size = sizeof(FrameUniform);
         uniform_desc.mappedAtCreation = false;
@@ -40,7 +33,10 @@ namespace Render {
         CreateDepthTexture(ctx);
     }
 
-    void Renderer::Render(Gpu::GpuContext& ctx, Ui::DebugUi& imgui, Camera& camera) {
+    static bool flag = false;
+
+    void Renderer::Render(Gpu::GpuContext& ctx, Ui::DebugUi& imgui, Camera& camera,
+                          World::Blocks::BlockRegistry& registry, World::Level& level) {
         auto frame_opt = ctx.StartFrame();
         if (!frame_opt) {
             spdlog::warn("Received invalid frame, skipping frame...");
@@ -50,13 +46,18 @@ namespace Render {
 
         float aspect = (float) frame.Width() / (float) frame.Height();
         glm::mat4 viewProj = camera.Projection(aspect) * camera.View();
-        glm::mat4 model = glm::rotate(glm::translate(glm::mat4{1.0f}, glm::vec3(0.0f, 0.0f, -3.0f)),
-                                      (float) glm::radians(glfwGetTime() * 8.f), {0, 1, 1});
 
-        FrameUniform uniform = {viewProj, model};
+        FrameUniform uniform = {viewProj};
 
         ctx.Queue().writeBuffer(*frame_uniform, 0, &uniform, sizeof(FrameUniform));
 
+        //TODO: REMOVE VERY UGLY
+        if (!flag) {
+            for (auto& [pos, chunk]: level.GetChunks()) {
+                world_mesher.GenerateMesh(pos, level, registry, ctx.Device(), ctx.Queue(), pipeline.ChunkUniform());
+            }
+            flag = true;
+        }
         wgpu::raii::CommandEncoder encoder = ctx.Device().createCommandEncoder();
 
         wgpu::RenderPassDescriptor render_desc{};
@@ -81,9 +82,17 @@ namespace Render {
         {
             wgpu::raii::RenderPassEncoder pass = encoder->beginRenderPass(render_desc);
             pass->setPipeline(pipeline.Get());
-            pass->setVertexBuffer(0, *vertex_buffer, 0, vertex_buffer->getSize());
             pass->setBindGroup(0, *frame_uniform_group, 0, nullptr);
-            pass->draw(vertices.size(), 1, 0, 0);
+
+            for (auto [pos, buffers]: world_mesher.GetChunkBuffers()) {
+                if (buffers.index_count == 0) {
+                    continue;
+                }
+                pass->setVertexBuffer(0, *buffers.vertex, 0, buffers.vertex->getSize());
+                pass->setIndexBuffer(*buffers.index, wgpu::IndexFormat::Uint32, 0, buffers.index->getSize());
+                pass->setBindGroup(1, *buffers.chunk_uniform_group, 0, nullptr);
+                pass->drawIndexed(buffers.index_count, 1, 0, 0, 0);
+            }
 
             imgui.Render(*pass);
             pass->end();

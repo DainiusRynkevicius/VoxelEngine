@@ -27,7 +27,23 @@ add_executable(VoxelEngine src/main.cpp
         src/ui/PerformanceWindow.h
         src/render/Camera.cpp
         src/render/Camera.h
-        src/render/FrameUniform.h)
+        src/render/FrameUniform.h
+        src/world/Level.cpp
+        src/world/Level.h
+        src/world/Chunk.cpp
+        src/world/Chunk.h
+        src/world/blocks/Block.h
+        src/world/blocks/BlockRegistry.cpp
+        src/world/blocks/BlockRegistry.h
+        src/world/generators/Generator.h
+        src/world/generators/FlatGenerator.cpp
+        src/world/generators/FlatGenerator.h
+        src/render/ChunkMesher.cpp
+        src/render/ChunkMesher.h
+        src/render/ChunkUniform.h
+        src/CameraController.cpp
+        src/CameraController.h
+)
 
 target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm imgui)
 

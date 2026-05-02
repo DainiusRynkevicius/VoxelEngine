@@ -31,11 +31,16 @@ public:
         return *frame_uniform_layout;
     }
 
+    wgpu::BindGroupLayout ChunkUniform() {
+        return *chunk_uniform_layout;
+    }
+
 private:
     wgpu::raii::PipelineLayout layout;
     wgpu::raii::RenderPipeline pipeline;
 
     wgpu::raii::BindGroupLayout frame_uniform_layout;
+    wgpu::raii::BindGroupLayout chunk_uniform_layout;
 
     wgpu::raii::ShaderModule LoadShaderModule(std::filesystem::path path, wgpu::Device device);
 };

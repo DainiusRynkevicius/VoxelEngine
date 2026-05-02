@@ -14,23 +14,36 @@ namespace Render::Gpu {
     Pipeline::Pipeline(GpuContext& ctx) {
         auto shader = LoadShaderModule("assets/shaders/chunk.wgsl", ctx.Device());
 
-        wgpu::BindGroupLayoutDescriptor uniform_desc{};
-        uniform_desc.entryCount = 1;
+        wgpu::BindGroupLayoutDescriptor frame_uniform_desc{};
+        frame_uniform_desc.entryCount = 1;
 
 
-        wgpu::BindGroupLayoutEntry uniform_entry{};
-        uniform_entry.binding = 0;
-        uniform_entry.visibility = wgpu::ShaderStage::Vertex;
-        uniform_entry.buffer.type = wgpu::BufferBindingType::Uniform;
+        wgpu::BindGroupLayoutEntry frame_uniform_entry{};
+        frame_uniform_entry.binding = 0;
+        frame_uniform_entry.visibility = wgpu::ShaderStage::Vertex;
+        frame_uniform_entry.buffer.type = wgpu::BufferBindingType::Uniform;
 
-        uniform_desc.entries = &uniform_entry;
+        frame_uniform_desc.entries = &frame_uniform_entry;
 
-        frame_uniform_layout = ctx.Device().createBindGroupLayout(uniform_desc);
+        frame_uniform_layout = ctx.Device().createBindGroupLayout(frame_uniform_desc);
+
+        wgpu::BindGroupLayoutDescriptor chunk_uniform_desc{};
+        chunk_uniform_desc.entryCount = 1;
+
+        wgpu::BindGroupLayoutEntry chunk_uniform_entry{};
+        chunk_uniform_entry.binding = 0;
+        chunk_uniform_entry.visibility = wgpu::ShaderStage::Vertex;
+        chunk_uniform_entry.buffer.type = wgpu::BufferBindingType::Uniform;
+
+        chunk_uniform_desc.entries = &chunk_uniform_entry;
+
+        chunk_uniform_layout = ctx.Device().createBindGroupLayout(chunk_uniform_desc);
 
         wgpu::PipelineLayoutDescriptor layout_descriptor{};
 
-        std::array<WGPUBindGroupLayout, 1> layouts = {
-            *frame_uniform_layout
+        std::array<WGPUBindGroupLayout, 2> layouts = {
+            *frame_uniform_layout,
+            *chunk_uniform_layout
         };
 
         layout_descriptor.bindGroupLayoutCount = layouts.size();
@@ -48,7 +61,7 @@ namespace Render::Gpu {
         pipeline_desc.vertex.constantCount = 0;
         pipeline_desc.vertex.constants = nullptr;
 
-        const wgpu::VertexBufferLayout vertex_layout = Render::Renderer::Vertex::GetLayout();
+        const wgpu::VertexBufferLayout vertex_layout = Render::ChunkMesher::Vertex::GetLayout();
         pipeline_desc.vertex.bufferCount = 1;
         pipeline_desc.vertex.buffers = &vertex_layout;
 
