@@ -17,3 +17,10 @@ if(APPLE)
             COMPILE_FLAGS "-x objective-c++"
     )
 endif()
+
+# Bug in glfw3webgpu not detecting wayland
+if (UNIX AND NOT APPLE)
+    if (DEFINED ENV{WAYLAND_DISPLAY} OR "$ENV{XDG_SESSION_TYPE}" STREQUAL "wayland")
+        target_compile_definitions(glfw3webgpu PRIVATE _GLFW_WAYLAND)
+    endif()
+endif()
