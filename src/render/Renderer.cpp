@@ -10,7 +10,7 @@
 #include "spdlog/spdlog.h"
 
 namespace Render {
-    Renderer::Renderer(Gpu::GpuContext& ctx) : pipeline(ctx) {
+    Renderer::Renderer(Gpu::GpuContext& ctx, World::Blocks::BlockRegistry& registry) : pipeline(ctx), textures(ctx,registry,pipeline.BlockTextureArray()) {
         wgpu::BufferDescriptor uniform_desc{};
         uniform_desc.size = sizeof(FrameUniform);
         uniform_desc.mappedAtCreation = false;
@@ -51,7 +51,7 @@ namespace Render {
 
         // Remake dirty chunks
         while (auto pos = level.PopDirtyChunk()) {
-            auto mesh_data = ChunkMesher::GenerateMesh(*pos, level, registry);
+            auto mesh_data = ChunkMesher::GenerateMesh(*pos, level, registry, textures);
             meshes.erase(*pos);
             meshes.try_emplace(*pos, mesh_data, ctx.Device(), ctx.Queue(), pipeline.ChunkUniform(), *pos);
         }
@@ -81,6 +81,7 @@ namespace Render {
             wgpu::raii::RenderPassEncoder pass = encoder->beginRenderPass(render_desc);
             pass->setPipeline(pipeline.Get());
             pass->setBindGroup(0, *frame_uniform_group, 0, nullptr);
+            pass->setBindGroup(2, textures.GetGroup(), 0, nullptr);
 
             for (auto& mesh: meshes | std::views::values) {
                 mesh.Draw(*pass);

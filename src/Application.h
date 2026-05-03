@@ -15,13 +15,15 @@
 
 class Application {
 private:
+    World::Blocks::BlockRegistry registry;
+
     Window window;
     Render::Gpu::GpuContext gpu_context;
     Render::Renderer renderer;
     Ui::DebugUi imgui;
     Render::Camera camera{};
     CameraController controller;
-    World::Blocks::BlockRegistry registry;
+
     World::Level level;
 
     double last_time;

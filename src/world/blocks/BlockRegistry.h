@@ -18,6 +18,8 @@ namespace World::Blocks {
         BlockRegistry();
         std::optional<Block> Get(size_t id);
 
+        std::vector<std::string> TextureNames();
+
     private:
         std::vector<Block> blocks;
     };

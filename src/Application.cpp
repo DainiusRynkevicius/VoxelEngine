@@ -16,7 +16,7 @@ Application* Application::Get() {
     return instance;
 }
 
-Application::Application() : window({800, 600}, "Voxel Engine"), gpu_context(window), renderer(gpu_context),
+Application::Application() : window({800, 600}, "Voxel Engine"), gpu_context(window), renderer(gpu_context,registry),
                              imgui(gpu_context, window), controller(camera),
                              level(std::make_unique<World::Generators::FlatGenerator>()) {
     instance = this;

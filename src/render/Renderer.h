@@ -16,10 +16,12 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/hash.hpp>
 
+#include "BlockTextures.h"
+
 namespace Render {
     class Renderer {
     public:
-        Renderer(Render::Gpu::GpuContext& ctx);
+        Renderer(Render::Gpu::GpuContext& ctx, World::Blocks::BlockRegistry& registry);
 
         void Render(Render::Gpu::GpuContext& ctx, Ui::DebugUi& imgui, Render::Camera& camera,
                     World::Blocks::BlockRegistry& registry, World::
@@ -27,8 +29,12 @@ namespace Render {
 
         void CreateDepthTexture(Render::Gpu::GpuContext& ctx);
 
+
+
     private:
         Gpu::Pipeline pipeline;
+
+        BlockTextures textures;
 
         wgpu::raii::Buffer frame_uniform;
         wgpu::raii::BindGroup frame_uniform_group;

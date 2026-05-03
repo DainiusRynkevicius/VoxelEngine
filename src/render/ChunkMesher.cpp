@@ -14,7 +14,7 @@
 
 namespace Render {
     MeshData ChunkMesher::GenerateMesh(glm::ivec3 chunk_pos, World::Level &level,
-                                       World::Blocks::BlockRegistry &registry) {
+                                       World::Blocks::BlockRegistry &registry, BlockTextures &textures) {
         auto chunk = level.GetChunk(chunk_pos);
         if (!chunk) {
             spdlog::error("Received invalid chunk meshing request. Pos x: {}, y: {}, z: {}.", chunk_pos.x, chunk_pos.y,
@@ -42,15 +42,18 @@ namespace Render {
                         if (registry.Get(sampled)->opaque)
                             continue;
 
-                        //TODO: Get correct layer
-                        uint8_t layer = 0;
+
+                        uint8_t layer = textures.GetLayer(registry.Get(block_id)->texture_name);
                         auto base_count = data.vertices.size();
 
+
+                        auto uv = GenerateUvs(atlas_uv_positions[f]);
                         for (int v = 0; v < 4; ++v) {
                             ChunkVertex vertex{};
                             vertex.texture_layer = layer;
                             //TODO: assign uv properly
-                            vertex.uv = glm::vec2{};
+
+                            vertex.uv = uv[v];
                             vertex.position = face_corners[f][v] + static_cast<glm::vec3>(pos);
 
                             data.vertices.push_back(vertex);

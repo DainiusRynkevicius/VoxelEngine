@@ -6,7 +6,8 @@ struct VertexIn{
 
 struct VertexOut{
     @builtin(position) position: vec4f,
-    @location(0) layer: u32,
+    @location(0) uv: vec2f,
+    @location(1) layer: u32,
 }
 
 struct FrameUniform{
@@ -27,12 +28,19 @@ var<uniform> chunk_uniform: ChunkUniform;
 fn vs_main(in: VertexIn) -> VertexOut{
     var out: VertexOut;
     out.position = frame_uniform.viewProj * chunk_uniform.model * vec4f(in.position,1.0);
+    out.uv = in.uv;
     out.layer = in.layer;
     return out;
 }
 
+@group(2) @binding(0)
+var block_texture: texture_2d_array<f32>;
+
+@group(2) @binding(1)
+var block_sampler: sampler;
 
 @fragment
 fn fs_main(in: VertexOut) -> @location(0) vec4f{
-    return vec4f(1, 1, 0, 1.0);
+    let sampled = textureSample(block_texture, block_sampler, in.uv, in.layer);
+    return sampled;
 }

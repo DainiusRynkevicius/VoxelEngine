@@ -39,11 +39,35 @@ namespace Render::Gpu {
 
         chunk_uniform_layout = ctx.Device().createBindGroupLayout(chunk_uniform_desc);
 
+        std::array<wgpu::BindGroupLayoutEntry, 2> texture_entries = {};
+        wgpu::BindGroupLayoutEntry texture{};
+        texture.binding = 0;
+        texture.visibility = wgpu::ShaderStage::Fragment;
+        texture.texture.multisampled = false;
+        texture.texture.sampleType = wgpu::TextureSampleType::Float;
+        texture.texture.viewDimension = wgpu::TextureViewDimension::_2DArray;
+
+        wgpu::BindGroupLayoutEntry sampler{};
+        sampler.binding = 1;
+        sampler.visibility = wgpu::ShaderStage::Fragment;
+        sampler.sampler.type = wgpu::SamplerBindingType::Filtering;
+
+        texture_entries[0] = texture;
+        texture_entries[1] = sampler;
+
+        wgpu::BindGroupLayoutDescriptor texture_desc{};
+        texture_desc.entries = texture_entries.data();
+        texture_desc.entryCount = texture_entries.size();
+        texture_desc.label = wgpu::StringView("Block texture array bind layout");
+
+        block_texture_layout = ctx.Device().createBindGroupLayout(texture_desc);
+
         wgpu::PipelineLayoutDescriptor layout_descriptor{};
 
-        std::array<WGPUBindGroupLayout, 2> layouts = {
+        std::array<WGPUBindGroupLayout, 3> layouts = {
             *frame_uniform_layout,
-            *chunk_uniform_layout
+            *chunk_uniform_layout,
+            *block_texture_layout,
         };
 
         layout_descriptor.bindGroupLayoutCount = layouts.size();

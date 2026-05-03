@@ -47,9 +47,11 @@ add_executable(VoxelEngine src/main.cpp
         src/render/ChunkMesh.h
         src/render/MeshData.h
         src/render/ChunkMesh.cpp
+        src/render/BlockTextures.cpp
+        src/render/BlockTextures.h
 )
 
-target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm imgui)
+target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm imgui stbimage)
 
 add_custom_target(CopyAssets ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets $<TARGET_FILE_DIR:VoxelEngine>/assets COMMENT "Copying Assets")
 
