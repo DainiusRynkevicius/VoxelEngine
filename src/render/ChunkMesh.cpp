@@ -7,6 +7,7 @@
 #include "ChunkUniform.h"
 #include "../world/Chunk.h"
 #include "glm/ext/matrix_transform.hpp"
+#include <format>
 
 
 Render::ChunkMesh::ChunkMesh(MeshData &data, wgpu::Device device, wgpu::Queue queue, wgpu::BindGroupLayout chunk_layout, glm::ivec3 chunk_pos) {

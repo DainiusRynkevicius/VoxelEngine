@@ -6,6 +6,8 @@
 #define VOXELENGINE_CHUNKVERTEX_H
 #include "glm/glm.hpp"
 #include "webgpu/webgpu.hpp"
+#include <array>
+#include <cstddef>
 
 namespace Render {
     struct ChunkVertex {
