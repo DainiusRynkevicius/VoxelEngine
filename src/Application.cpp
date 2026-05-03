@@ -18,7 +18,7 @@ Application* Application::Get() {
 
 Application::Application() : window({800, 600}, "Voxel Engine"), gpu_context(window), renderer(gpu_context,registry),
                              imgui(gpu_context, window), controller(camera),
-                             level(std::make_unique<World::Generators::FlatGenerator>()) {
+                             level(std::make_unique<World::Generators::FlatGenerator>(8, 2)) {
     instance = this;
     glfwSetFramebufferSizeCallback(window.Get(), ResizeCallback);
     imgui.AddDrawable<Ui::DemoWindow>();

@@ -19,7 +19,7 @@ namespace World::Generators {
         for (int i = 0; i < Chunk::CHUNK_SIZE; ++i) {
             for (int j = 0; j < Chunk::CHUNK_SIZE; ++j) {
                 //TODO: add option for block
-                chunk.SetBlock({i, local_y, j}, 1);
+                chunk.SetBlock({i, local_y, j}, block_id);
             }
         }
     }

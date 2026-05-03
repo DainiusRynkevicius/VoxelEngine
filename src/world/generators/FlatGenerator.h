@@ -11,11 +11,13 @@ namespace World::Generators {
 
 class FlatGenerator : public Generator{
 public:
-    FlatGenerator(unsigned int height = 1) : height(height){}
+    FlatGenerator(unsigned int height = 1, uint32_t block_id = 1) : height(height), block_id(block_id){}
     void GenerateChunk(glm::ivec3 chunk_pos, Chunk& chunk) override;
 private:
     /// Global y level
     unsigned int height;
+
+    uint32_t block_id;
 };
 
 }
