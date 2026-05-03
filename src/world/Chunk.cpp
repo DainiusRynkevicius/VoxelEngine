@@ -6,6 +6,9 @@
 
 void World::Chunk::SetBlock(glm::ivec3 localPos, uint8_t block) {
     blocks[GetIndex(localPos)] = block;
+    if (block!=0) {
+        empty = false;
+    }
 }
 
 size_t World::Chunk::GetIndex(glm::ivec3 localPos) {

@@ -52,6 +52,9 @@ namespace Render {
         // Remake dirty chunks
         while (auto pos = level.PopDirtyChunk()) {
             auto mesh_data = ChunkMesher::GenerateMesh(*pos, level, registry, textures);
+            if (mesh_data.indices.empty()) {
+                continue;
+            }
             meshes.erase(*pos);
             meshes.try_emplace(*pos, mesh_data, ctx.Device(), ctx.Queue(), pipeline.ChunkUniform(), *pos);
         }

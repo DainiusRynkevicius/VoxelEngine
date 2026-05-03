@@ -5,8 +5,9 @@
 #ifndef VOXELENGINE_CHUNK_H
 #define VOXELENGINE_CHUNK_H
 #include <array>
+#include <algorithm>
 
-#include "glm/vec3.hpp"
+#include "glm/glm.hpp"
 
 
 namespace World {
@@ -22,8 +23,13 @@ namespace World {
 
         uint8_t GetBlock(glm::ivec3 localPos);
 
+        bool Empty() {
+            return empty;
+        }
+
     private:
         std::array<uint8_t, CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE> blocks{};
+        bool empty = true;
     };
 }
 

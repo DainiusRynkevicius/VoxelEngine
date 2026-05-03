@@ -36,7 +36,7 @@ namespace Render {
         sampler_desc.addressModeV = wgpu::AddressMode::ClampToEdge;
         sampler_desc.addressModeW = wgpu::AddressMode::ClampToEdge;
         sampler_desc.mipmapFilter = wgpu::MipmapFilterMode::Nearest;
-        sampler_desc.magFilter = wgpu::FilterMode::Linear;
+        sampler_desc.magFilter = wgpu::FilterMode::Nearest;
         sampler_desc.minFilter = wgpu::FilterMode::Nearest;
         sampler_desc.maxAnisotropy = 1;
 

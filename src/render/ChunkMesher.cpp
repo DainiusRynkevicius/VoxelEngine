@@ -22,6 +22,9 @@ namespace Render {
             //TODO: custom exception
             throw std::runtime_error("Chunk does not exist");
         }
+        if (chunk->Empty()) {
+            return {};
+        }
         auto neighbors = GetNeighbors(chunk_pos, level);
 
         MeshData data{};
@@ -51,8 +54,6 @@ namespace Render {
                         for (int v = 0; v < 4; ++v) {
                             ChunkVertex vertex{};
                             vertex.texture_layer = layer;
-                            //TODO: assign uv properly
-
                             vertex.uv = uv[v];
                             vertex.position = face_corners[f][v] + static_cast<glm::vec3>(pos);
 
