@@ -5,9 +5,10 @@
 #ifndef VOXELENGINE_WORLD_H
 #define VOXELENGINE_WORLD_H
 #include <memory>
+#include <queue>
 
 #define GLM_ENABLE_EXPERIMENTAL
-#include <queue>
+#include <unordered_set>
 #include <glm/gtx/hash.hpp>
 
 #include "generators/Generator.h"
@@ -27,16 +28,27 @@ namespace World {
             return nullptr;
         }
 
-        //TODO: remove
-        std::unordered_map<glm::ivec3, Chunk>& GetChunks() {
-            return chunks;
+        void MarkDirty(glm::ivec3 pos) {
+            dirty.emplace(pos);
         }
+
+         std::optional<glm::ivec3> PopDirtyChunk() {
+            if (dirty.empty()) {
+                return std::nullopt;
+            }
+            const auto it = dirty.begin();
+            auto pos = *it;
+            dirty.erase(it);
+            return pos;
+        }
+
+        //TODO: add global set block from level and private chunk based set block.
 
     private:
         std::unique_ptr<Generators::Generator> generator;
 
         std::unordered_map<glm::ivec3, Chunk> chunks;
-        std::queue<glm::ivec3> dirty;
+        std::unordered_set<glm::ivec3> dirty;
     };
 }
 #endif //VOXELENGINE_WORLD_H

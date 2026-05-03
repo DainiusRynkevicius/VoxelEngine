@@ -9,8 +9,12 @@
 #include <array>
 
 #include "Camera.h"
+#include "ChunkMesh.h"
 #include "ChunkMesher.h"
 #include "../ui/DebugUi.h"
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/hash.hpp>
 
 namespace Render {
     class Renderer {
@@ -32,7 +36,7 @@ namespace Render {
         wgpu::raii::Texture depth_texture;
         wgpu::raii::TextureView depth_view;
 
-        ChunkMesher world_mesher;
+        std::unordered_map<glm::ivec3, ChunkMesh> meshes;
     };
 } // render
 

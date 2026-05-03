@@ -33,8 +33,6 @@ namespace Render {
         CreateDepthTexture(ctx);
     }
 
-    static bool flag = false;
-
     void Renderer::Render(Gpu::GpuContext& ctx, Ui::DebugUi& imgui, Camera& camera,
                           World::Blocks::BlockRegistry& registry, World::Level& level) {
         auto frame_opt = ctx.StartFrame();
@@ -51,13 +49,13 @@ namespace Render {
 
         ctx.Queue().writeBuffer(*frame_uniform, 0, &uniform, sizeof(FrameUniform));
 
-        //TODO: REMOVE VERY UGLY
-        if (!flag) {
-            for (auto& [pos, chunk]: level.GetChunks()) {
-                world_mesher.GenerateMesh(pos, level, registry, ctx.Device(), ctx.Queue(), pipeline.ChunkUniform());
-            }
-            flag = true;
+        // Remake dirty chunks
+        while (auto pos = level.PopDirtyChunk()) {
+            auto mesh_data = ChunkMesher::GenerateMesh(*pos, level, registry);
+            meshes.erase(*pos);
+            meshes.try_emplace(*pos, mesh_data, ctx.Device(), ctx.Queue(), pipeline.ChunkUniform(), *pos);
         }
+
         wgpu::raii::CommandEncoder encoder = ctx.Device().createCommandEncoder();
 
         wgpu::RenderPassDescriptor render_desc{};
@@ -84,14 +82,8 @@ namespace Render {
             pass->setPipeline(pipeline.Get());
             pass->setBindGroup(0, *frame_uniform_group, 0, nullptr);
 
-            for (auto [pos, buffers]: world_mesher.GetChunkBuffers()) {
-                if (buffers.index_count == 0) {
-                    continue;
-                }
-                pass->setVertexBuffer(0, *buffers.vertex, 0, buffers.vertex->getSize());
-                pass->setIndexBuffer(*buffers.index, wgpu::IndexFormat::Uint32, 0, buffers.index->getSize());
-                pass->setBindGroup(1, *buffers.chunk_uniform_group, 0, nullptr);
-                pass->drawIndexed(buffers.index_count, 1, 0, 0, 0);
+            for (auto& mesh: meshes | std::views::values) {
+                mesh.Draw(*pass);
             }
 
             imgui.Render(*pass);

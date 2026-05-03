@@ -43,6 +43,10 @@ add_executable(VoxelEngine src/main.cpp
         src/render/ChunkUniform.h
         src/CameraController.cpp
         src/CameraController.h
+        src/render/ChunkVertex.h
+        src/render/ChunkMesh.h
+        src/render/MeshData.h
+        src/render/ChunkMesh.cpp
 )
 
 target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm imgui)

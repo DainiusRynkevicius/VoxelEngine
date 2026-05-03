@@ -61,7 +61,7 @@ namespace Render::Gpu {
         pipeline_desc.vertex.constantCount = 0;
         pipeline_desc.vertex.constants = nullptr;
 
-        const wgpu::VertexBufferLayout vertex_layout = Render::ChunkMesher::Vertex::GetLayout();
+        const wgpu::VertexBufferLayout vertex_layout = ChunkVertex::GetLayout();
         pipeline_desc.vertex.bufferCount = 1;
         pipeline_desc.vertex.buffers = &vertex_layout;
 
