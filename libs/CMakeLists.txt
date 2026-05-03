@@ -4,6 +4,7 @@ add_subdirectory(glfw-3.4)
 add_subdirectory(glfw3webgpu)
 add_subdirectory(glm)
 add_subdirectory(stbimage)
+add_subdirectory(FastNoise2-1.1.1)
 
 add_library(imgui imgui-docking/imgui.cpp imgui-docking/imgui_demo.cpp imgui-docking/imgui_draw.cpp imgui-docking/imgui_tables.cpp imgui-docking/imgui_widgets.cpp imgui-docking/backends/imgui_impl_glfw.cpp imgui-docking/backends/imgui_impl_wgpu.cpp)
 target_include_directories(imgui PUBLIC imgui-docking/ imgui-docking/backends/)
