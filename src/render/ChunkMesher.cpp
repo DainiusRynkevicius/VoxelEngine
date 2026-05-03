@@ -131,17 +131,17 @@ namespace Render {
         // If not return the block in neighbor if exists
         int neighborId;
 
-        if (block_pos.x < 0) {
+        if (block_pos.x >= chunk_size) {
             neighborId = 0;
-        } else if (block_pos.x >= chunk_size) {
+        } else if (block_pos.x < 0) {
             neighborId = 1;
-        } else if (block_pos.y < 0) {
-            neighborId = 2;
         } else if (block_pos.y >= chunk_size) {
+            neighborId = 2;
+        } else if (block_pos.y < 0) {
             neighborId = 3;
-        } else if (block_pos.z < 0) {
+        } else if (block_pos.z >= chunk_size) {
             neighborId = 4;
-        } else {
+        } else if (block_pos.z < 0) {
             neighborId = 5;
         }
 
