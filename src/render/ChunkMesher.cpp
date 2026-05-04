@@ -54,7 +54,7 @@ namespace Render {
                         for (int v = 0; v < 4; ++v) {
                             ChunkVertex vertex{};
                             vertex.texture_layer = layer;
-                            vertex.uv = uv[v];
+                            vertex.uv = uv[uv_rotations[f][v]];
                             vertex.position = face_corners[f][v] + static_cast<glm::vec3>(pos);
 
                             data.vertices.push_back(vertex);
