@@ -56,3 +56,5 @@ target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm imgui stbim
 add_custom_target(CopyAssets ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets $<TARGET_FILE_DIR:VoxelEngine>/assets COMMENT "Copying Assets")
 
 add_dependencies(VoxelEngine CopyAssets)
+
+target_copy_webgpu_binaries(VoxelEngine)
