@@ -68,6 +68,8 @@ Render::Gpu::GpuContext::GpuContext(Window& window) {
     surface_configuration.usage = wgpu::TextureUsage::RenderAttachment;
 
     surface->configure(surface_configuration);
+
+    surface_caps.freeMembers();
 }
 
 std::optional<Render::Gpu::Frame> Render::Gpu::GpuContext::StartFrame() {

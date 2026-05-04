@@ -94,7 +94,8 @@ namespace Render {
             pass->end();
         }
 
-        ctx.Queue().submit(encoder->finish());
+        wgpu::raii::CommandBuffer cmd = encoder->finish();
+        ctx.Queue().submit(*cmd);
 
         ctx.EndFrame();
     }
