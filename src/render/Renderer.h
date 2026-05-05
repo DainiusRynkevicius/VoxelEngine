@@ -23,13 +23,14 @@ namespace Render {
     public:
         Renderer(Render::Gpu::GpuContext& ctx, World::Blocks::BlockRegistry& registry);
 
-        void Render(Render::Gpu::GpuContext& ctx, Ui::DebugUi& imgui, Render::Camera& camera,
-                    World::Blocks::BlockRegistry& registry, World::
-                    Level& level);
+        void Render(Gpu::GpuContext &ctx, Ui::DebugUi &imgui, Camera &camera,
+                    World::Blocks::BlockRegistry &registry, World::Level *level);
 
         void CreateDepthTexture(Render::Gpu::GpuContext& ctx);
 
-
+        void EraseMeshes() {
+            meshes.clear();
+        }
 
     private:
         Gpu::Pipeline pipeline;

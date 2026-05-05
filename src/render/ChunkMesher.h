@@ -18,7 +18,7 @@ namespace World::Blocks {
 namespace Render {
     class ChunkMesher {
     public:
-        static MeshData GenerateMesh(glm::ivec3 chunk_pos, World::Level &level, World::Blocks::BlockRegistry &registry,
+        static MeshData GenerateMesh(glm::ivec3 chunk_pos, World::Level *level, World::Blocks::BlockRegistry &registry,
                                      BlockTextures &textures);
 
     private:

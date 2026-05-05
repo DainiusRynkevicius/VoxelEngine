@@ -49,6 +49,8 @@ add_executable(VoxelEngine src/main.cpp
         src/render/ChunkMesh.cpp
         src/render/BlockTextures.cpp
         src/render/BlockTextures.h
+        src/ui/WorldCreateWindow.cpp
+        src/ui/WorldCreateWindow.h
 )
 
 target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm imgui stbimage FastNoise2)

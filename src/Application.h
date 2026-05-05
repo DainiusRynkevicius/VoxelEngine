@@ -24,7 +24,7 @@ private:
     Render::Camera camera{};
     CameraController controller;
 
-    World::Level level;
+    std::unique_ptr<World::Level> level;
 
     double last_time;
 
@@ -33,6 +33,17 @@ public:
     Application();
     void Run();
     static void ResizeCallback(GLFWwindow* window, int width, int height);
+    void GenerateWorld(std::unique_ptr<World::Generators::Generator>&& gen, const glm::ivec3 level_size) {
+        level = std::make_unique<World::Level>(std::move(gen));
+
+        for (int x = -level_size.x; x < level_size.x; ++x) {
+            for (int y = -level_size.y; y < level_size.y; ++y) {
+                for (int z = -level_size.z; z < level_size.z; ++z) {
+                    level->GenerateChunk({x, y, z});
+                }
+            }
+        }
+    }
 };
 
 

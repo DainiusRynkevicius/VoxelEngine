@@ -8,18 +8,23 @@
 
 
 namespace World::Generators {
+    class FlatGenerator : public Generator {
+    public:
+        struct Options {
+            /// Global y level
+            int height = 1;
+            /// Block used to fill
+            uint32_t block_id = 1;
+        };
 
-class FlatGenerator : public Generator{
-public:
-    FlatGenerator(unsigned int height = 1, uint32_t block_id = 1) : height(height), block_id(block_id){}
-    void GenerateChunk(glm::ivec3 chunk_pos, Chunk& chunk) override;
-private:
-    /// Global y level
-    unsigned int height;
+        FlatGenerator(Options options) : options(options) {
+        }
 
-    uint32_t block_id;
-};
+        void GenerateChunk(glm::ivec3 chunk_pos, Chunk &chunk) override;
 
+    private:
+        Options options;
+    };
 }
 
 #endif //VOXELENGINE_FLATGENERATOR_H

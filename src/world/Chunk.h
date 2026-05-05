@@ -19,7 +19,7 @@ namespace World {
 
         void SetBlock(glm::ivec3 localPos, uint8_t block);
 
-        size_t GetIndex(glm::ivec3 localPos);
+        static size_t GetIndex(glm::ivec3 localPos);
 
         uint8_t GetBlock(glm::ivec3 localPos);
 

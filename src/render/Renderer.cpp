@@ -34,7 +34,7 @@ namespace Render {
     }
 
     void Renderer::Render(Gpu::GpuContext& ctx, Ui::DebugUi& imgui, Camera& camera,
-                          World::Blocks::BlockRegistry& registry, World::Level& level) {
+                          World::Blocks::BlockRegistry& registry, World::Level* level) {
         auto frame_opt = ctx.StartFrame();
         if (!frame_opt) {
             spdlog::warn("Received invalid frame, skipping frame...");
@@ -50,15 +50,16 @@ namespace Render {
         ctx.Queue().writeBuffer(*frame_uniform, 0, &uniform, sizeof(FrameUniform));
 
         // Remake dirty chunks
-        while (auto pos = level.PopDirtyChunk()) {
-            auto mesh_data = ChunkMesher::GenerateMesh(*pos, level, registry, textures);
-            if (mesh_data.indices.empty()) {
-                continue;
+        if (level) {
+            while (auto pos = level->PopDirtyChunk()) {
+                auto mesh_data = ChunkMesher::GenerateMesh(*pos, level, registry, textures);
+                if (mesh_data.indices.empty()) {
+                    continue;
+                }
+                meshes.erase(*pos);
+                meshes.try_emplace(*pos, mesh_data, ctx.Device(), ctx.Queue(), pipeline.ChunkUniform(), *pos);
             }
-            meshes.erase(*pos);
-            meshes.try_emplace(*pos, mesh_data, ctx.Device(), ctx.Queue(), pipeline.ChunkUniform(), *pos);
         }
-
         wgpu::raii::CommandEncoder encoder = ctx.Device().createCommandEncoder();
 
         wgpu::RenderPassDescriptor render_desc{};

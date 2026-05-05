@@ -19,6 +19,9 @@ namespace World::Blocks {
         std::optional<Block> Get(size_t id);
 
         std::vector<std::string> TextureNames();
+        size_t BlockCount() const {
+            return blocks.size();
+        }
 
     private:
         std::vector<Block> blocks;

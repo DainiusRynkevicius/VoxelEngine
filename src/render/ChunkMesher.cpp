@@ -13,9 +13,9 @@
 #include "../world/blocks/BlockRegistry.h"
 
 namespace Render {
-    MeshData ChunkMesher::GenerateMesh(glm::ivec3 chunk_pos, World::Level &level,
+    MeshData ChunkMesher::GenerateMesh(glm::ivec3 chunk_pos, World::Level* level,
                                        World::Blocks::BlockRegistry &registry, BlockTextures &textures) {
-        auto chunk = level.GetChunk(chunk_pos);
+        auto chunk = level->GetChunk(chunk_pos);
         if (!chunk) {
             spdlog::error("Received invalid chunk meshing request. Pos x: {}, y: {}, z: {}.", chunk_pos.x, chunk_pos.y,
                           chunk_pos.z);
@@ -39,7 +39,7 @@ namespace Render {
                     }
 
                     for (int f = 0; f < 6; ++f) {
-                        auto sampled = level.GetBlock(World::Level::GetGlobalPos(chunk_pos,pos) + face_offsets[f]);
+                        auto sampled = level->GetBlock(World::Level::GetGlobalPos(chunk_pos,pos) + face_offsets[f]);
                         if (registry.Get(sampled)->opaque)
                             continue;
 
