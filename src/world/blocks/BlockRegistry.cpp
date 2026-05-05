@@ -10,7 +10,9 @@ namespace World::Blocks {
         blocks.emplace_back("Air", "", false); // Must always exist
         blocks.emplace_back("Template", "assets/textures/template.png", true);
         blocks.emplace_back("Dice", "assets/textures/dice.png", true);
-
+        blocks.emplace_back("Dirt", "assets/textures/dirt.png", true);
+        blocks.emplace_back("Grass", "assets/textures/grass.png", true);
+        blocks.emplace_back("Stone", "assets/textures/stone.png", true);
     }
 
     std::optional<Block> BlockRegistry::Get(size_t id) {
