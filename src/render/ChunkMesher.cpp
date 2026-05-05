@@ -75,7 +75,7 @@ namespace Render {
 
     uint8_t ChunkMesher::SampleBlock(World::Chunk& chunk, const std::array<World::Chunk*, 6>& neighbors,
                                      glm::ivec3 block_pos) {
-        auto chunk_size = World::Chunk::CHUNK_SIZE;
+        int chunk_size = World::Chunk::CHUNK_SIZE;
         // Check if block is in bounds of chunk
         if (block_pos.x >= 0 && block_pos.x < chunk_size &&
             block_pos.y >= 0 && block_pos.y < chunk_size &&
