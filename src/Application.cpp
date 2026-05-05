@@ -29,7 +29,7 @@ Application::Application() : window({800, 600}, "Voxel Engine"), gpu_context(win
     //TODO: change to dynamic
 
     // generate chunks
-    constexpr int LEVEL_SIZE = 3;
+    constexpr int LEVEL_SIZE = 8;
     for (int x = -LEVEL_SIZE; x < LEVEL_SIZE; ++x) {
         for (int y = -LEVEL_SIZE; y < LEVEL_SIZE; ++y) {
             for (int z = -LEVEL_SIZE; z < LEVEL_SIZE; ++z) {

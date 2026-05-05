@@ -13,7 +13,7 @@
 namespace World {
     class Chunk {
     public:
-        static constexpr unsigned int CHUNK_SIZE = 32;
+        static constexpr unsigned int CHUNK_SIZE = 8;
 
         Chunk() = default;
 
@@ -23,7 +23,7 @@ namespace World {
 
         uint8_t GetBlock(glm::ivec3 localPos);
 
-        bool Empty() {
+        [[nodiscard]] bool Empty() const {
             return empty;
         }
 

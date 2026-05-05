@@ -22,9 +22,6 @@ namespace Render {
                                      BlockTextures &textures);
 
     private:
-        static uint8_t SampleBlock(World::Chunk &chunk, const std::array<World::Chunk *, 6> &neighbors,
-                                   glm::ivec3 block_pos);
-
         static constexpr std::array<glm::ivec3, 6> face_offsets = {
             glm::ivec3{1, 0, 0}, // right
             glm::ivec3{-1, 0, 0}, // left
@@ -81,14 +78,6 @@ namespace Render {
                 glm::vec2{u1, v0},
                 glm::vec2{u0, v0},
             };
-        }
-
-        static std::array<World::Chunk *, 6> GetNeighbors(const glm::ivec3 chunk_pos, World::Level &level) {
-            std::array<World::Chunk *, 6> neighbors{};
-            for (int i = 0; i < face_offsets.size(); ++i) {
-                neighbors[i] = level.GetChunk(chunk_pos + face_offsets[i]);
-            }
-            return neighbors;
         }
     };
 } // Render

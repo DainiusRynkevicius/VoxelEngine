@@ -22,11 +22,10 @@ namespace Render {
             //TODO: custom exception
             throw std::runtime_error("Chunk does not exist");
         }
+        spdlog::debug("Generating chunk: x: {} y: {} z: {}", chunk_pos.x, chunk_pos.y, chunk_pos.z);
         if (chunk->Empty()) {
             return {};
         }
-        auto neighbors = GetNeighbors(chunk_pos, level);
-
         MeshData data{};
 
         for (int x = 0; x < World::Chunk::CHUNK_SIZE; ++x) {
@@ -40,8 +39,7 @@ namespace Render {
                     }
 
                     for (int f = 0; f < 6; ++f) {
-                        // TODO: maybe replace with level.GetBlock()?
-                        auto sampled = SampleBlock(*chunk, neighbors, pos + face_offsets[f]);
+                        auto sampled = level.GetBlock(World::Level::GetGlobalPos(chunk_pos,pos) + face_offsets[f]);
                         if (registry.Get(sampled)->opaque)
                             continue;
 
@@ -71,42 +69,5 @@ namespace Render {
             }
         }
         return data;
-    }
-
-    uint8_t ChunkMesher::SampleBlock(World::Chunk& chunk, const std::array<World::Chunk*, 6>& neighbors,
-                                     glm::ivec3 block_pos) {
-        int chunk_size = World::Chunk::CHUNK_SIZE;
-        // Check if block is in bounds of chunk
-        if (block_pos.x >= 0 && block_pos.x < chunk_size &&
-            block_pos.y >= 0 && block_pos.y < chunk_size &&
-            block_pos.z >= 0 && block_pos.z < chunk_size) {
-            return chunk.GetBlock(block_pos);
-        }
-
-        //TODO: place an assert if block pos is valid
-
-        // If not return the block in neighbor if exists
-        int neighborId;
-
-        if (block_pos.x >= chunk_size) {
-            neighborId = 0;
-        } else if (block_pos.x < 0) {
-            neighborId = 1;
-        } else if (block_pos.y >= chunk_size) {
-            neighborId = 2;
-        } else if (block_pos.y < 0) {
-            neighborId = 3;
-        } else if (block_pos.z >= chunk_size) {
-            neighborId = 4;
-        } else  {
-            neighborId = 5;
-        }
-
-        if (auto neighbor = neighbors[neighborId]) {
-            const auto local_pos = (block_pos + glm::ivec3(chunk_size)) % glm::ivec3(chunk_size);
-            return neighbor->GetBlock(local_pos);
-        }
-
-        return 0; // Air
     }
 } // Render

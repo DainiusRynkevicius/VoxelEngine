@@ -7,19 +7,20 @@
 
 namespace World::Generators {
     void FlatGenerator::GenerateChunk(glm::ivec3 chunk_pos, Chunk& chunk) {
-        int chunk_bottom_y = chunk_pos.y * Chunk::CHUNK_SIZE;
+        int chunk_bottom_y = chunk_pos.y * Chunk::CHUNK_SIZE + 1;
 
         // Chunk does not have the height required
         if (chunk_bottom_y >= height) {
             return;
         }
 
-        auto local_y = height - chunk_bottom_y;
-
-        for (int i = 0; i < Chunk::CHUNK_SIZE; ++i) {
-            for (int j = 0; j < Chunk::CHUNK_SIZE; ++j) {
-                //TODO: add option for block
-                chunk.SetBlock({i, local_y, j}, block_id);
+        for (int x = 0; x < Chunk::CHUNK_SIZE; ++x) {
+            for (int z = 0; z < Chunk::CHUNK_SIZE; ++z) {
+                for (int y = 0; y < Chunk::CHUNK_SIZE; ++y) {
+                    if (chunk_bottom_y + y < height) {
+                        chunk.SetBlock({x, y, z}, block_id);
+                    }
+                }
             }
         }
     }
