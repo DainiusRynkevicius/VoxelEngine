@@ -10,7 +10,7 @@
 Render::Gpu::GpuContext::GpuContext(Window& window) {
     instance = wgpu::createInstance();
 
-    surface = wgpu::Surface(glfwGetWGPUSurface(*instance, window.Get()));
+    surface = wgpu::Surface(glfwCreateWindowWGPUSurface(*instance, window.Get()));
 
     wgpu::RequestAdapterOptions adapter_options{};
     adapter_options.compatibleSurface = *surface;
