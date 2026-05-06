@@ -12,7 +12,7 @@
 namespace Render {
     class Camera {
     public:
-        glm::vec3 position;
+        glm::vec3 position = {0, 10, 0};
         glm::quat rotation;
 
         glm::mat4 View();
