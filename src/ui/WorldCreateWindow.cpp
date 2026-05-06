@@ -28,6 +28,9 @@ namespace Ui {
                 case 0:
                     application.GenerateWorld(std::make_unique<World::Generators::FlatGenerator>(flat), level_size);
                     break;
+                case 1:
+                    application.GenerateWorld(std::make_unique<World::Generators::HillGenerator>(seed, hill), level_size);
+                    break;
                 default:
                     spdlog::error("Unknown generator selected.");
                     break;
@@ -75,7 +78,21 @@ namespace Ui {
             raw_selected_block = std::clamp(raw_selected_block, 0, static_cast<int>(registry.BlockCount()) - 1);
 
             flat.block_id = raw_selected_block;
-        } else {
+        }else if (generator_selected == 1) {
+            float raw_freq = hill.frequency;
+            float raw_amp = hill.amplitude;
+            int raw_seed = seed;
+
+            ImGui::InputInt("Seed", &raw_seed);
+            ImGui::InputFloat("Frequency", &raw_freq, 0.1f, 0.2f);
+            ImGui::InputFloat("Amplitude", &raw_amp, 1.f, 5.f);
+            ImGui::InputInt("Base Height", &hill.base_height);
+
+            hill.amplitude = std::clamp(raw_amp, 0.f, 200.f);
+            hill.frequency = std::clamp(raw_freq, 0.001f, 3.0f);
+            seed = std::clamp(raw_seed, 0, INT_MAX);
+        }
+        else {
             ImGui::Text("Unknown generator, no options available.");
         }
     }

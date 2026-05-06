@@ -7,6 +7,7 @@
 #include "ImguiDrawable.h"
 #include "../Application.h"
 #include "../world/generators/FlatGenerator.h"
+#include "../world/generators/HillGenerator.h"
 
 namespace Ui {
     class WorldCreateWindow : public ImguiDrawable{
@@ -22,15 +23,18 @@ namespace Ui {
         int generator_selected = 0;
         std::vector<std::string> generators = {
             "Flat Generator",
+            "Hill Generator"
         };
 
         glm::ivec3 level_size = {3, 3, 3};
 
         void GeneratorSelector();
         void GeneratorOptions();
+        uint32_t seed = 0;
         //TODO: maybe do this better?
         // Generator options
         World::Generators::FlatGenerator::Options flat;
+        World::Generators::HillGenerator::Options hill;
     };
 } // Ui
 

@@ -51,6 +51,9 @@ add_executable(VoxelEngine src/main.cpp
         src/render/BlockTextures.h
         src/ui/WorldCreateWindow.cpp
         src/ui/WorldCreateWindow.h
+        src/world/generators/NoiseGenerator.h
+        src/world/generators/HillGenerator.cpp
+        src/world/generators/HillGenerator.h
 )
 
 target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm imgui stbimage FastNoise2)
