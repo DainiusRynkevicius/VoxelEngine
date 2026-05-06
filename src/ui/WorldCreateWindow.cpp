@@ -31,6 +31,9 @@ namespace Ui {
                 case 1:
                     application.GenerateWorld(std::make_unique<World::Generators::HillGenerator>(seed, hill), level_size);
                     break;
+                case 2:
+                    application.GenerateWorld(std::make_unique<World::Generators::CaveGenerator>(seed, cave), level_size);
+                    break;
                 default:
                     spdlog::error("Unknown generator selected.");
                     break;
@@ -91,6 +94,17 @@ namespace Ui {
             hill.amplitude = std::clamp(raw_amp, 0.f, 200.f);
             hill.frequency = std::clamp(raw_freq, 0.001f, 3.0f);
             seed = std::clamp(raw_seed, 0, INT_MAX);
+        } else if (generator_selected == 2) {
+            float raw_freq = cave.frequency;
+            float raw_threshold = cave.threshold;
+            int raw_seed = seed;
+
+            ImGui::InputInt("Seed", &raw_seed);
+            ImGui::InputFloat("Frequency", &raw_freq, 0.1f, 0.2f);
+            ImGui::InputFloat("Threshold", &raw_threshold, 0.01f, 0.1f);
+
+            cave.frequency = std::clamp(raw_freq, 0.001f, 3.0f);
+            cave.threshold = std::clamp(raw_threshold, 0.f, 1.0f);
         }
         else {
             ImGui::Text("Unknown generator, no options available.");

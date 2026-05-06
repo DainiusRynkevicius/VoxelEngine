@@ -6,6 +6,7 @@
 #define VOXELENGINE_WORLDCREATEWINDOW_H
 #include "ImguiDrawable.h"
 #include "../Application.h"
+#include "../world/generators/CaveGenerator.h"
 #include "../world/generators/FlatGenerator.h"
 #include "../world/generators/HillGenerator.h"
 
@@ -23,10 +24,11 @@ namespace Ui {
         int generator_selected = 0;
         std::vector<std::string> generators = {
             "Flat Generator",
-            "Hill Generator"
+            "Hill Generator",
+            "Cave Generator",
         };
 
-        glm::ivec3 level_size = {3, 3, 3};
+        glm::ivec3 level_size = {6, 6, 6};
 
         void GeneratorSelector();
         void GeneratorOptions();
@@ -35,6 +37,7 @@ namespace Ui {
         // Generator options
         World::Generators::FlatGenerator::Options flat;
         World::Generators::HillGenerator::Options hill;
+        World::Generators::CaveGenerator::Options cave;
     };
 } // Ui
 

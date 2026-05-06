@@ -54,6 +54,8 @@ add_executable(VoxelEngine src/main.cpp
         src/world/generators/NoiseGenerator.h
         src/world/generators/HillGenerator.cpp
         src/world/generators/HillGenerator.h
+        src/world/generators/CaveGenerator.cpp
+        src/world/generators/CaveGenerator.h
 )
 
 target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm imgui stbimage FastNoise2)
