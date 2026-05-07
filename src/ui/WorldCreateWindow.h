@@ -33,7 +33,6 @@ namespace Ui {
         void GeneratorSelector();
         void GeneratorOptions();
         uint32_t seed = 0;
-        //TODO: maybe do this better?
         // Generator options
         World::Generators::FlatGenerator::Options flat;
         World::Generators::HillGenerator::Options hill;

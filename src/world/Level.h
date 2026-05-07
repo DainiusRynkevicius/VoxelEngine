@@ -63,9 +63,8 @@ namespace World {
                 }
                 return;
             }
-            spdlog::warn("Attempted to blace block id {} at: {} {} {} in non existant chunk.", block, block_pos.x,
+            spdlog::warn("Attempted to place block id {} at: {} {} {} in non existent chunk.", block, block_pos.x,
                          block_pos.y, block_pos.z);
-            //TODO: throw exception
         }
 
         /// Returns chunk pos, local block pos

@@ -53,7 +53,6 @@ Render::Gpu::GpuContext::GpuContext(Window& window) {
 
     queue = device->getQueue();
 
-    //TODO: Pick surface capabilities better
     wgpu::SurfaceCapabilities surface_caps;
     surface -> getCapabilities(*adapter, &surface_caps);
 
@@ -81,8 +80,6 @@ std::optional<Render::Gpu::Frame> Render::Gpu::GpuContext::StartFrame() {
         if (surface_texture.texture) {
             wgpuTextureRelease(surface_texture.texture);
         }
-
-        //TODO: Handle better, reconfigure surface
         spdlog::warn("Failed to obtain surface texture.");
         return {};
     }
