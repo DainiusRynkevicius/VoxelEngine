@@ -12,12 +12,13 @@ void Ui::PerformanceWindow::Draw(double deltaTime) {
     double fps = 1.0/deltaTime;
     double deltaMs = deltaTime*1000;
 
-    ImGui::Begin("Performance");
+    if (open) {
+        ImGui::Begin("Performance", &open);
+        ImGui::Text("FPS: %.1f", fps);
+        ImGui::Text("Delta time: %.3f ms", deltaMs);
 
-    ImGui::Text("FPS: %.1f", fps);
-    ImGui::Text("Delta time: %.3f ms", deltaMs);
+        //TODO: add graph
 
-    //TODO: add graph
-
-    ImGui::End();
+        ImGui::End();
+    }
 }

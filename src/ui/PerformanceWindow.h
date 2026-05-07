@@ -10,6 +10,9 @@
 namespace Ui {
     class PerformanceWindow : public Ui::ImguiDrawable{
         void Draw(double deltaTime) override;
+
+    private:
+        bool open = true;
     };
 }
 

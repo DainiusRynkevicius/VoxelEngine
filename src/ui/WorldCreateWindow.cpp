@@ -11,37 +11,40 @@
 
 namespace Ui {
     void WorldCreateWindow::Draw(double deltaTime) {
-        ImGui::Begin("World Creation", &open);
+        if (open) {
+            ImGui::Begin("World Creation", &open);
+            GeneratorSelector();
 
-        GeneratorSelector();
+            ImGui::InputInt3("World Size", glm::value_ptr(level_size));
 
-        ImGui::InputInt3("World Size", glm::value_ptr(level_size));
+            ImGui::Separator();
 
-        ImGui::Separator();
+            GeneratorOptions();
 
-        GeneratorOptions();
+            ImGui::Separator();
 
-        ImGui::Separator();
-
-        if (ImGui::Button("Generate")) {
-            switch (generator_selected) {
-                case 0:
-                    application.GenerateWorld(std::make_unique<World::Generators::FlatGenerator>(flat), level_size);
-                    break;
-                case 1:
-                    application.GenerateWorld(std::make_unique<World::Generators::HillGenerator>(seed, hill), level_size);
-                    break;
-                case 2:
-                    application.GenerateWorld(std::make_unique<World::Generators::CaveGenerator>(seed, cave), level_size);
-                    break;
-                default:
-                    spdlog::error("Unknown generator selected.");
-                    break;
+            if (ImGui::Button("Generate")) {
+                switch (generator_selected) {
+                    case 0:
+                        application.GenerateWorld(std::make_unique<World::Generators::FlatGenerator>(flat), level_size);
+                        break;
+                    case 1:
+                        application.GenerateWorld(std::make_unique<World::Generators::HillGenerator>(seed, hill),
+                                                  level_size);
+                        break;
+                    case 2:
+                        application.GenerateWorld(std::make_unique<World::Generators::CaveGenerator>(seed, cave),
+                                                  level_size);
+                        break;
+                    default:
+                        spdlog::error("Unknown generator selected.");
+                        break;
+                }
             }
-        }
-        ImGui::Text("Warning: Clicking generate will freeze the window while generating.");
+            ImGui::Text("Warning: Clicking generate will freeze the window while generating.");
 
-        ImGui::End();
+            ImGui::End();
+        }
     }
 
     void WorldCreateWindow::GeneratorSelector() {

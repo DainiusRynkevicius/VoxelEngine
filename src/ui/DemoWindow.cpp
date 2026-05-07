@@ -8,6 +8,8 @@
 
 namespace Ui {
     void DemoWindow::Draw(double deltaTime) {
-        ImGui::ShowDemoWindow(&open);
+        if (open) {
+            ImGui::ShowDemoWindow(&open);
+        }
     }
 } // Ui
