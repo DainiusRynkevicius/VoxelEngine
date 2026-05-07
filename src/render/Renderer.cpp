@@ -7,6 +7,7 @@
 #include <ranges>
 
 #include "FrameUniform.h"
+#include "../Exceptions.h"
 #include "spdlog/spdlog.h"
 
 namespace Render {
@@ -52,12 +53,18 @@ namespace Render {
         // Remake dirty chunks
         if (level) {
             while (auto pos = level->PopDirtyChunk()) {
-                auto mesh_data = ChunkMesher::GenerateMesh(*pos, level, registry, textures);
-                if (mesh_data.indices.empty()) {
-                    continue;
+                try {
+                    auto mesh_data = ChunkMesher::GenerateMesh(*pos, level, registry, textures);
+                    if (mesh_data.indices.empty()) {
+                        continue;
+                    }
+                    meshes.erase(*pos);
+                    meshes.try_emplace(*pos, mesh_data, ctx.Device(), ctx.Queue(), pipeline.ChunkUniform(), *pos);
+                } catch (InvalidChunkPositionException& e) {
+                    spdlog::warn("Received invalid chunk meshing request. Pos x: {}, y: {}, z: {}. Skipping...",
+                                 e.invalid.x, e.invalid.y,
+                                 e.invalid.z);
                 }
-                meshes.erase(*pos);
-                meshes.try_emplace(*pos, mesh_data, ctx.Device(), ctx.Queue(), pipeline.ChunkUniform(), *pos);
             }
         }
         wgpu::raii::CommandEncoder encoder = ctx.Device().createCommandEncoder();

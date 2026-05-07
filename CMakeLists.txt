@@ -58,6 +58,7 @@ add_executable(VoxelEngine src/main.cpp
         src/world/generators/CaveGenerator.h
         src/ui/BlockListWindow.cpp
         src/ui/BlockListWindow.h
+        src/Exceptions.h
 )
 
 target_link_libraries(VoxelEngine webgpu spdlog glfw glfw3webgpu glm imgui stbimage FastNoise2)

@@ -7,6 +7,7 @@
 #include "ChunkUniform.h"
 #include "MeshData.h"
 #include "../Application.h"
+#include "../Exceptions.h"
 #include "glm/ext/matrix_transform.hpp"
 #include "spdlog/spdlog.h"
 #include "../world/blocks/Block.h"
@@ -17,10 +18,7 @@ namespace Render {
                                        World::Blocks::BlockRegistry &registry, BlockTextures &textures) {
         auto chunk = level->GetChunk(chunk_pos);
         if (!chunk) {
-            spdlog::error("Received invalid chunk meshing request. Pos x: {}, y: {}, z: {}.", chunk_pos.x, chunk_pos.y,
-                          chunk_pos.z);
-            //TODO: custom exception
-            throw std::runtime_error("Chunk does not exist");
+            throw InvalidChunkPositionException(chunk_pos);
         }
         spdlog::debug("Generating chunk: x: {} y: {} z: {}", chunk_pos.x, chunk_pos.y, chunk_pos.z);
         if (chunk->Empty()) {
