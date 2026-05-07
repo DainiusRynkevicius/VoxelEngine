@@ -22,7 +22,7 @@ Application::Application() : window({800, 600}, "Voxel Engine"), gpu_context(win
                              imgui(gpu_context, window), controller(camera){
     instance = this;
     glfwSetFramebufferSizeCallback(window.Get(), ResizeCallback);
-    imgui.AddDrawable<Ui::DemoWindow>();
+    //imgui.AddDrawable<Ui::DemoWindow>();
     imgui.AddDrawable<Ui::PerformanceWindow>();
     imgui.AddDrawable<Ui::WorldCreateWindow>(*this, registry);
     imgui.AddDrawable<Ui::BlockListWindow>(registry);
