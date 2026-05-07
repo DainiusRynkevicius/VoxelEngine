@@ -5,6 +5,7 @@
 #include "Application.h"
 
 #include "spdlog/spdlog.h"
+#include "ui/BlockListWindow.h"
 #include "ui/DemoWindow.h"
 #include "ui/PerformanceWindow.h"
 #include "ui/WorldCreateWindow.h"
@@ -24,6 +25,7 @@ Application::Application() : window({800, 600}, "Voxel Engine"), gpu_context(win
     imgui.AddDrawable<Ui::DemoWindow>();
     imgui.AddDrawable<Ui::PerformanceWindow>();
     imgui.AddDrawable<Ui::WorldCreateWindow>(*this, registry);
+    imgui.AddDrawable<Ui::BlockListWindow>(registry);
 
     last_time = glfwGetTime();
 }

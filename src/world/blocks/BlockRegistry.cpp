@@ -26,9 +26,20 @@ namespace World::Blocks {
     std::vector<std::string> BlockRegistry::TextureNames() {
         std::vector<std::string> res;
         res.reserve(blocks.size() - 1);
-
-        for (size_t i = 1; i < blocks.size(); ++i) { // skip air
+        // skip air
+        for (size_t i = 1; i < blocks.size(); ++i) {
             res.emplace_back(blocks[i].texture_name);
+        }
+
+        return res;
+    }
+
+    std::vector<std::string> BlockRegistry::BlockNames() {
+        std::vector<std::string> res;
+        res.reserve(blocks.size() - 1);
+
+        for (auto& block: blocks) {
+            res.emplace_back(block.name);
         }
 
         return res;

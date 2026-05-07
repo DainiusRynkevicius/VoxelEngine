@@ -17,7 +17,7 @@ namespace World::Generators {
         for (int x = 0; x < Chunk::CHUNK_SIZE; ++x) {
             for (int z = 0; z < Chunk::CHUNK_SIZE; ++z) {
                 for (int y = 0; y < Chunk::CHUNK_SIZE; ++y) {
-                    if (chunk_bottom_y + y <options. height) {
+                    if (chunk_bottom_y + y < options.height) {
                         chunk.SetBlock({x, y, z}, options.block_id);
                     }
                 }
