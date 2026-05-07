@@ -1,0 +1,42 @@
+name: draft-release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Draft version"
+        required: true
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Configure CMake
+        run: >
+          cmake -B build
+          -DCMAKE_CXX_COMPILER=cl
+          -DCMAKE_C_COMPILER=cl
+          -DCMAKE_BUILD_TYPE=Release
+          -S .
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Package
+        shell: powershell
+        run: |
+          $out = "VoxelEngine${{ inputs.version }}-windows"
+          New-Item -ItemType Directory -Path $out
+          Copy-Item "build/Release/VoxelEngine.exe"  $out/
+          Copy-Item "build/Release/wgpu_native.dll"  $out/
+          Copy-Item "build/Release/assets"            $out/ -Recurse
+          Compress-Archive -Path $out -DestinationPath "$out.zip"
+      - name: Create draft release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: VoxelEngine${{ inputs.version }}-windows.zip
+
