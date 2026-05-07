@@ -5,6 +5,7 @@
 #ifndef VOXELENGINE_FPSCOUNTERWINDOW_H
 #define VOXELENGINE_FPSCOUNTERWINDOW_H
 #include <array>
+#include <cstddef>
 
 #include "ImguiDrawable.h"
 
