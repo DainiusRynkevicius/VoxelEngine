@@ -108,6 +108,7 @@ namespace Ui {
 
             cave.frequency = std::clamp(raw_freq, 0.001f, 3.0f);
             cave.threshold = std::clamp(raw_threshold, 0.f, 1.0f);
+            seed = std::clamp(raw_seed, 0, INT_MAX);
         }
         else {
             ImGui::Text("Unknown generator, no options available.");
