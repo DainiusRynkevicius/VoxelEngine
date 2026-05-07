@@ -1,7 +1,7 @@
 # Voxel Engine
 
 Coursework submission for Object-Oriented Programming.\
-A C++23 voxel engine build on WGPU, featuring chunk-based worlds, multiple runtime-switchable terrain generators,
+A C++23 voxel engine built on WGPU, featuring chunk-based worlds, multiple runtime-switchable terrain generators,
 textured blocks and DearImGui support.
 
 ## Demo
@@ -18,7 +18,7 @@ TODO
     - Cave Generator
 - Textured blocks, each block uses one 128x96 texture atlas
 - Flycam
-- ImGui debug window: performance graph, block reigstry table, world generation window.
+- ImGui debug window: performance graph, block registry table, world generation window.
 
 ## Controls
 
