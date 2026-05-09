@@ -1,4 +1,4 @@
-add_subdirectory(cpm-cmake)
+include(CPM.cmake)
 add_subdirectory(wgpu-native)
 add_subdirectory(spdlog)
 add_subdirectory(glfw)
