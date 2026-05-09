@@ -46,8 +46,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: recursive
 
     - name: Install Linux GLFW dependencies
       if: matrix.os == 'ubuntu-latest'
